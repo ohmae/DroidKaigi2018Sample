@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#FFD600</color>
+    <color name="primary_dark">#F57F17</color>
+    <color name="accent">#2962FF</color>
+    <color name="primary_text">#000000</color>
+    <color name="sample2_introductory_dimmer">#80000000</color>
+    <color name="sample2_introductory_background">#E02962FF</color>
+    <color name="sample2_introductory_text">#ffffff</color>
+</resources>

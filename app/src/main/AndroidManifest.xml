@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="net.mm2d.droidkaigi2018sample">
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".sample1.Sample1Activity"
+            android:label="SAMPLE1"
+            android:theme="@style/AppThemeDark.NoActionBar"
+            />
+        <activity
+            android:name=".sample2.Sample2Activity"
+            android:label="SAMPLE2"
+            android:theme="@style/AppThemeDark"
+            />
+        <activity
+            android:name=".sample3.Sample3Activity"
+            android:label="SAMPLE3"
+            android:theme="@style/AppThemeDark.NoActionBar"
+            />
+        <activity
+            android:name=".sample4.Sample4Activity"
+            android:label="SAMPLE4"
+            android:theme="@style/AppThemeDark.NoActionBar"
+            />
+        <activity
+            android:name=".sample5.Sample51Activity"
+            android:label="SAMPLE5-1"
+            android:theme="@style/AppThemeDark.NoActionBar"
+            />
+        <activity
+            android:name=".sample5.Sample52Activity"
+            android:label="SAMPLE5-2"
+            android:theme="@style/AppThemeDark.NoActionBar"
+            />
+    </application>
+
+</manifest>
