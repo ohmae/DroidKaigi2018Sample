@@ -11,8 +11,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.annotation.Dimension
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-
+import kotlinx.android.synthetic.main.activity_sample5.*
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.sample5.MultiTouchGestureDetector.GestureListener
 
@@ -24,26 +23,24 @@ class Sample52Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample5)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         setUpGridMap()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setUpGridMap() {
-        val gridMapView = findViewById<GridMapView>(R.id.grid_map)
         val detector = MultiTouchGestureDetector(this, object : GestureListener {
             override fun onMove(@Dimension deltaX: Float, @Dimension deltaY: Float) {
-                gridMapView.gridMapContext.onMoveControl(deltaX, deltaY)
-                gridMapView.invalidate()
+                gridMap.gridMapContext.onMoveControl(deltaX, deltaY)
+                gridMap.invalidate()
             }
 
             override fun onScale(@Dimension focusX: Float, @Dimension focusY: Float, scaleX: Float, scaleY: Float) {
-                gridMapView.gridMapContext.onScaleControl(focusX, focusY, scaleX, scaleY)
-                gridMapView.invalidate()
+                gridMap.gridMapContext.onScaleControl(focusX, focusY, scaleX, scaleY)
+                gridMap.invalidate()
             }
         })
-        gridMapView.setOnTouchListener { _, event ->
+        gridMap.setOnTouchListener { _, event ->
             detector.onTouchEvent(event)
             true
         }

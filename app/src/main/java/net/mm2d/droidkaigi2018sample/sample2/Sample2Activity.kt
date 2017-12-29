@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
 
 class Sample2Activity : AppCompatActivity() {
@@ -30,8 +31,7 @@ class Sample2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample2)
-        val view = findViewById<View>(R.id.icon)
-        view.setOnTouchListener({ v, event -> this.onTouch(v, event) })
+        icon.setOnTouchListener { v, event -> onTouch(v, event) }
         touchSlop = ViewConfiguration.get(this).scaledTouchSlop
     }
 
@@ -39,10 +39,11 @@ class Sample2Activity : AppCompatActivity() {
         val action = event.actionMasked
         val tracker = velocityTracker ?: VelocityTracker.obtain()
         velocityTracker = tracker
-        val e = MotionEvent.obtain(event)
-        e.offsetLocation(v.translationX, v.translationY)
-        tracker.addMovement(e)
-        e.recycle()
+        MotionEvent.obtain(event).let {
+            it.offsetLocation(v.translationX, v.translationY)
+            tracker.addMovement(it)
+            it.recycle()
+        }
         when (action) {
             MotionEvent.ACTION_DOWN -> {
                 stopInertialMove()
@@ -79,24 +80,26 @@ class Sample2Activity : AppCompatActivity() {
     }
 
     private fun startInertialMove(v: View) {
-        velocityTracker!!.computeCurrentVelocity(16)
-        velocityX = velocityTracker!!.xVelocity
-        velocityY = velocityTracker!!.yVelocity
+        velocityTracker?.apply {
+            computeCurrentVelocity(1)
+            velocityX = xVelocity * FRAME_INTERVAL
+            velocityY = yVelocity * FRAME_INTERVAL
+        }
         val velocity = distance(velocityX, velocityY)
         if (velocity < 1f) {
             return
         }
-        val duration = (Math.log10((1f / velocity).toDouble()) / Math.log10(DECELERATION_RATE.toDouble()) * 16).toLong()
-        val anim = ValueAnimator.ofFloat(0f, 1f)
-        anim.duration = Math.max(0, duration)
-        anim.addUpdateListener { _ -> inertialMove(v) }
-        anim.start()
-        animator = anim
+        val d = (Math.log((1.0 / velocity)) / Math.log(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
+        animator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = Math.max(0, d)
+            addUpdateListener { _ -> inertialMove(v) }
+            start()
+        }
     }
 
     private fun stopInertialMove() {
-        if (animator != null && animator!!.isRunning) {
-            animator!!.cancel()
+        if (animator?.isRunning == true) {
+            animator?.cancel()
         }
         animator = null
     }
@@ -121,6 +124,7 @@ class Sample2Activity : AppCompatActivity() {
 
     companion object {
         private val DECELERATION_RATE = 0.95f
+        private val FRAME_INTERVAL = 16f
 
         private fun clamp(value: Float, min: Float, max: Float): Float {
             return Math.min(Math.max(value, min), max)

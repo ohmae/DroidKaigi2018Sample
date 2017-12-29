@@ -81,10 +81,12 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (buffer == null || buffer?.width != canvas.width || buffer?.height != canvas.height) {
-            buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888)
-            this.canvas = Canvas(buffer!!)
-            this.canvas!!.drawColor(Color.WHITE)
+        if (buffer?.run { width != canvas.width || height != canvas.width } == true) {
+            buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
+                this.canvas = Canvas(it).apply {
+                    drawColor(Color.WHITE)
+                }
+            }
         }
         canvas.drawBitmap(buffer!!, 0f, 0f, paint)
     }

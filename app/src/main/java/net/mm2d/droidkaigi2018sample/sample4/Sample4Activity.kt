@@ -9,10 +9,8 @@ package net.mm2d.droidkaigi2018sample.sample4
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.View
 import android.widget.Toast
-
+import kotlinx.android.synthetic.main.activity_sample4.*
 import net.mm2d.droidkaigi2018sample.R
 
 /**
@@ -22,9 +20,8 @@ class Sample4Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample4)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        findViewById<View>(R.id.icon).setOnClickListener {
+        icon.setOnClickListener {
             Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
         }
     }

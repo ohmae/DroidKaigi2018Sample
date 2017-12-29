@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import net.mm2d.droidkaigi2018sample.sample1.Sample1Activity
 import net.mm2d.droidkaigi2018sample.sample2.Sample2Activity
 import net.mm2d.droidkaigi2018sample.sample3.Sample3Activity
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = ListAdapter(this, Arrays.asList(
@@ -50,45 +50,42 @@ class MainActivity : AppCompatActivity() {
         ))
     }
 
-    private inner class Link internal constructor(internal val title: String, private val mClass: Class<out Activity>) {
-
+    private inner class Link
+    internal constructor(internal val title: String, private val clazz: Class<out Activity>) {
         internal fun startActivity(context: Context) {
             try {
-                context.startActivity(Intent(context, mClass))
+                context.startActivity(Intent(context, clazz))
             } catch (e: ActivityNotFoundException) {
                 Log.e(e)
             }
-
         }
     }
 
-    private class ListAdapter internal constructor(private val mContext: Context, list: List<Link>) : Adapter<ListAdapter.ViewHolder>() {
-        private val mLayoutInflater: LayoutInflater = LayoutInflater.from(mContext)
-        private val mLinks: List<Link>
-
-        init {
-            mLinks = ArrayList(list)
-        }
+    private class ListAdapter
+    internal constructor(private val context: Context, list: List<Link>)
+        : Adapter<ListAdapter.ViewHolder>() {
+        private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+        private val links: List<Link> = ArrayList(list)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = mLayoutInflater.inflate(R.layout.li_main_link, parent, false)
+            val view = layoutInflater.inflate(R.layout.li_main_link, parent, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.apply(mLinks[position])
+            holder.apply(links[position])
         }
 
         override fun getItemCount(): Int {
-            return mLinks.size
+            return links.size
         }
 
         internal inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            private val mTextView: TextView = itemView.findViewById(R.id.text)
+            private val textView: TextView = itemView.findViewById(R.id.text)
 
             fun apply(link: Link) {
-                itemView.setOnClickListener { _ -> link.startActivity(mContext) }
-                mTextView.text = link.title.toUpperCase()
+                itemView.setOnClickListener { _ -> link.startActivity(context) }
+                textView.text = link.title.toUpperCase()
             }
         }
     }

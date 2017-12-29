@@ -14,7 +14,7 @@ import android.view.MotionEvent
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-internal class MultiTouchGestureDetector(context: Context, private val mListener: GestureListener) {
+class MultiTouchGestureDetector(context: Context, private val mListener: GestureListener) {
     @Dimension
     private val minimumSpan: Float
     @Dimension

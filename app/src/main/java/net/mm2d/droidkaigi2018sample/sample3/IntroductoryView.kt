@@ -150,7 +150,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (animator == null || animator!!.isRunning) {
+        if (animator?.isRunning == true) {
             return true
         }
         if (event.action == MotionEvent.ACTION_UP) {
@@ -167,9 +167,10 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     }
 
     private fun stopAnimation() {
-        if (animator != null) {
-            animator!!.cancel()
+        if (animator?.isRunning == true) {
+            animator?.cancel()
         }
+        animator = null
     }
 
     override fun onDetachedFromWindow() {
