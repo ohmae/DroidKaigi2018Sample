@@ -10,11 +10,13 @@ package net.mm2d.droidkaigi2018sample.sample2
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.support.v4.math.MathUtils.clamp
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.util.calculateDistance
 
 class Sample2Activity : AppCompatActivity() {
     private var touchSlop: Int = 0
@@ -53,7 +55,7 @@ class Sample2Activity : AppCompatActivity() {
             }
             MotionEvent.ACTION_MOVE -> if (dragging) {
                 moveOffset(v, event.rawX - prevX, event.rawY - prevY)
-            } else if (distance(event.rawX - startX, event.rawY - startY) > touchSlop) {
+            } else if (calculateDistance(event.rawX - startX, event.rawY - startY) > touchSlop) {
                 dragging = true
             }
             MotionEvent.ACTION_UP -> {
@@ -85,7 +87,7 @@ class Sample2Activity : AppCompatActivity() {
             velocityX = xVelocity * FRAME_INTERVAL
             velocityY = yVelocity * FRAME_INTERVAL
         }
-        val velocity = distance(velocityX, velocityY)
+        val velocity = calculateDistance(velocityX, velocityY)
         if (velocity < 1f) {
             return
         }
@@ -125,13 +127,5 @@ class Sample2Activity : AppCompatActivity() {
     companion object {
         private val DECELERATION_RATE = 0.95f
         private val FRAME_INTERVAL = 16f
-
-        private fun clamp(value: Float, min: Float, max: Float): Float {
-            return Math.min(Math.max(value, min), max)
-        }
-
-        private fun distance(x: Float, y: Float): Float {
-            return Math.sqrt((x * x + y * y).toDouble()).toFloat()
-        }
     }
 }

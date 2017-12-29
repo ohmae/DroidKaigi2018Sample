@@ -15,6 +15,8 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Bitmap.Config
 import android.graphics.Path.Direction
+import android.graphics.PorterDuff.Mode.CLEAR
+import android.graphics.PorterDuff.Mode.SRC
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
@@ -26,6 +28,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.util.calculateDistance
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -35,10 +38,18 @@ class IntroductoryView
 constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : FrameLayout(context, attrs, defStyleAttr) {
     private var buffer: Bitmap? = null
-    private var canvas: Canvas? = null
-    private val circlePaint: Paint
-    private val holePaint: Paint
-    private val path: Path
+    private var bufferCanvas: Canvas? = null
+    private val path = Path()
+    private val circlePaint = Paint().apply {
+        isAntiAlias = true
+        color = ContextCompat.getColor(context, R.color.sample2_introductory_background)
+        xfermode = PorterDuffXfermode(SRC)
+    }
+    private val holePaint = Paint().apply {
+        isAntiAlias = true
+        color = Color.BLACK
+        xfermode = PorterDuffXfermode(CLEAR)
+    }
 
     private var centerX: Float = 0f
     private var centerY: Float = 0f
@@ -51,50 +62,34 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_sample3_introductory, this)
-        circlePaint = createCirclePaint()
-        holePaint = createHolePaint()
-        path = Path()
         alpha = 0f
     }
 
-    private fun createCirclePaint(): Paint {
-        val paint = Paint()
-        paint.isAntiAlias = true
-        paint.color = ContextCompat.getColor(context, R.color.sample2_introductory_background)
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
-        return paint
-    }
-
-    private fun createHolePaint(): Paint {
-        val paint = Paint()
-        paint.isAntiAlias = true
-        paint.color = Color.BLACK
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-        return paint
-    }
-
     override fun dispatchDraw(canvas: Canvas) {
-        if (buffer == null || this.canvas == null || buffer!!.width != canvas.width || buffer!!.height != canvas.height) {
-            buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888)
-            this.canvas = Canvas(buffer!!)
+        if (buffer == null || buffer.run { width != canvas.width || height != canvas.height }) {
+            buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
+                bufferCanvas = Canvas(it)
+            }
         }
-        val workCanvas = this.canvas!!
-        workCanvas.drawColor(dimmerColor, PorterDuff.Mode.SRC)
+        drawBuffer(bufferCanvas!!)
+        canvas.drawBitmap(buffer!!, 0f, 0f, null)
+    }
+
+    private fun drawBuffer(canvas: Canvas) {
+        canvas.drawColor(dimmerColor, PorterDuff.Mode.SRC)
         if (circleRadius == 0f) {
-            canvas.drawBitmap(buffer!!, 0f, 0f, null)
             return
         }
-        workCanvas.drawCircle(centerX, centerY, circleRadius, circlePaint)
-        workCanvas.save()
+        canvas.drawCircle(centerX, centerY, circleRadius, circlePaint)
+        canvas.save()
         path.reset()
         path.addCircle(centerX, centerY, circleRadius, Direction.CW)
-        workCanvas.clipPath(path)
-        super.dispatchDraw(this.canvas)
-        workCanvas.restore()
+        canvas.clipPath(path)
+        super.dispatchDraw(this.bufferCanvas)
+        canvas.restore()
         if (holeRadius > 0f) {
-            workCanvas.drawCircle(centerX, centerY, holeRadius, holePaint)
+            canvas.drawCircle(centerX, centerY, holeRadius, holePaint)
         }
-        canvas.drawBitmap(buffer!!, 0f, 0f, null)
     }
 
     fun startAnimation(targetView: View) {
@@ -104,48 +99,48 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         centerY = rect.centerY().toFloat()
         val targetHoleRadius = calculateDistance(rect.width().toFloat(), rect.height().toFloat()) / 2f
         setPadding(paddingLeft, (centerY + targetHoleRadius).toInt(), paddingRight, paddingBottom)
-        val dimmerAnimator = createDimmerAnimator()
-        val circleAnimator = createCircleAnimator()
-        val holeAnimator = createHoleAnimator(targetHoleRadius)
-        val animatorSet = AnimatorSet()
-        animatorSet.play(dimmerAnimator).before(circleAnimator)
-        animatorSet.play(circleAnimator).with(holeAnimator)
-        animatorSet.start()
-        animator = animatorSet
+        animator = AnimatorSet().apply {
+            val dimmerAnimator = createDimmerAnimator()
+            val circleAnimator = createCircleAnimator()
+            val holeAnimator = createHoleAnimator(targetHoleRadius)
+            play(dimmerAnimator).before(circleAnimator)
+            play(circleAnimator).with(holeAnimator)
+            start()
+        }
     }
 
     private fun createDimmerAnimator(): Animator {
-        val dimmerAnimator = ValueAnimator.ofFloat(0f, 1f)
-        dimmerAnimator.addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-        dimmerAnimator.startDelay = 200L
-        dimmerAnimator.duration = 500L
-        dimmerAnimator.interpolator = LinearInterpolator()
-        return dimmerAnimator
+        return ValueAnimator.ofFloat(0f, 1f).apply {
+            addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+            startDelay = 200L
+            duration = 500L
+            interpolator = LinearInterpolator()
+        }
     }
 
     private fun createCircleAnimator(): Animator {
         val radius = context.resources.getDimension(R.dimen.sample2_circle_radius)
-        val circleAnimator = ValueAnimator.ofFloat(0f, radius)
-        circleAnimator.interpolator = OvershootInterpolator()
-        circleAnimator.startDelay = 100L
-        circleAnimator.duration = 1000L
-        circleAnimator.addUpdateListener { animation ->
-            circleRadius = animation.animatedValue as Float
-            invalidate()
+        return ValueAnimator.ofFloat(0f, radius).apply {
+            interpolator = OvershootInterpolator()
+            startDelay = 100L
+            duration = 1000L
+            addUpdateListener { animation ->
+                circleRadius = animation.animatedValue as Float
+                invalidate()
+            }
         }
-        return circleAnimator
     }
 
-    private fun createHoleAnimator(radius: Float): Animator {
-        val holeAnimator = ValueAnimator.ofFloat(0f, radius)
-        holeAnimator.interpolator = OvershootInterpolator()
-        holeAnimator.startDelay = 200L
-        holeAnimator.duration = 500L
-        holeAnimator.addUpdateListener { animation ->
-            holeRadius = animation.animatedValue as Float
-            invalidate()
+    private fun createHoleAnimator(targetRadius: Float): Animator {
+        return ValueAnimator.ofFloat(0f, targetRadius).apply {
+            interpolator = OvershootInterpolator()
+            startDelay = 200L
+            duration = 500L
+            addUpdateListener { animation ->
+                holeRadius = animation.animatedValue as Float
+                invalidate()
+            }
         }
-        return holeAnimator
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -162,10 +157,6 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         return calculateDistance(dx, dy) >= holeRadius
     }
 
-    private fun calculateDistance(x: Float, y: Float): Float {
-        return Math.sqrt((x * x + y * y).toDouble()).toFloat()
-    }
-
     private fun stopAnimation() {
         if (animator?.isRunning == true) {
             animator?.cancel()
@@ -177,6 +168,6 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         super.onDetachedFromWindow()
         stopAnimation()
         buffer = null
-        canvas = null
+        bufferCanvas = null
     }
 }

@@ -9,13 +9,15 @@ package net.mm2d.droidkaigi2018sample.sample4
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.v4.math.MathUtils.clamp
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
+import net.mm2d.droidkaigi2018sample.util.calculateDistance
 
 /**
- * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
+ * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class ScrollLayout
 @JvmOverloads
@@ -38,7 +40,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                 startY = event.rawY
             }
             MotionEvent.ACTION_MOVE -> {
-                if (!dragging && distance(event.rawX - startX, event.rawY - startY) > touchSlop) {
+                if (!dragging && calculateDistance(event.rawX - startX, event.rawY - startY) > touchSlop) {
                     dragging = true
                 }
             }
@@ -60,7 +62,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             MotionEvent.ACTION_MOVE -> {
                 if (dragging) {
                     moveOffset(event.rawX - prevX, event.rawY - prevY)
-                } else if (distance(event.rawX - startX, event.rawY - startY) > touchSlop) {
+                } else if (calculateDistance(event.rawX - startX, event.rawY - startY) > touchSlop) {
                     dragging = true
                 }
             }
@@ -81,15 +83,5 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         val transitionY = v.translationY + dy
         v.translationX = clamp(transitionX, 0f, (width - v.width).toFloat())
         v.translationY = clamp(transitionY, 0f, (height - v.height).toFloat())
-    }
-
-    companion object {
-        private fun clamp(value: Float, min: Float, max: Float): Float {
-            return Math.min(Math.max(value, min), max)
-        }
-
-        private fun distance(x: Float, y: Float): Float {
-            return Math.sqrt((x * x + y * y).toDouble()).toFloat()
-        }
     }
 }

@@ -22,13 +22,10 @@ class GridMapView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
         View(context, attrs, defStyleAttr) {
-    val gridMapContext: GridMapContext
-    private val paint: Paint = Paint()
-
-    init {
-        paint.color = Color.BLACK
-        paint.isAntiAlias = true
-        gridMapContext = GridMapContext(context)
+    val gridMapContext: GridMapContext = GridMapContext(context)
+    private val paint: Paint = Paint().apply {
+        color = Color.BLACK
+        isAntiAlias = true
     }
 
     override fun onDraw(canvas: Canvas) {

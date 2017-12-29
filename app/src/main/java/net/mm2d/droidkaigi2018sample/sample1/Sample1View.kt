@@ -32,9 +32,9 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     private val radius: Float
     private val paint: Paint
     private var buffer: Bitmap? = null
-    private var canvas: Canvas? = null
+    private var bufferCanvas: Canvas? = null
 
-    private var mUseHistory: Boolean = false
+    private var useHistory: Boolean = false
 
     init {
         val resources = context.resources
@@ -46,44 +46,50 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     }
 
     fun clear() {
-        canvas?.drawColor(Color.WHITE) ?: return
+        bufferCanvas?.drawColor(Color.WHITE) ?: return
         invalidate()
     }
 
     fun setUseHistory(useHistory: Boolean) {
-        mUseHistory = useHistory
+        this.useHistory = useHistory
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (canvas == null) {
-            return true
-        }
-        val pinterCount = event.pointerCount
-        if (mUseHistory) {
-            val historySize = event.historySize
-            for (p in 0 until pinterCount) {
-                val index = event.getPointerId(p)
-                paint.color = COLORS[index % COLORS.size]
-                for (h in 0 until historySize) {
-                    canvas!!.drawCircle(event.getHistoricalX(p, h), event.getHistoricalY(p, h), radius, paint)
-                }
-            }
-        } else {
-            for (p in 0 until pinterCount) {
-                val index = event.getPointerId(p)
-                paint.color = COLORS[index % COLORS.size]
-                canvas!!.drawCircle(event.getX(p), event.getY(p), radius, paint)
+        bufferCanvas?.let {
+            if (useHistory) {
+                drawTouchWithHistory(it, event)
+            } else {
+                drawTouch(it, event)
             }
         }
         invalidate()
         return true
     }
 
+    private fun drawTouchWithHistory(canvas: Canvas, event: MotionEvent) {
+        val historySize = event.historySize
+        for (p in 0 until event.pointerCount) {
+            val index = event.getPointerId(p)
+            paint.color = COLORS[index % COLORS.size]
+            for (h in 0 until historySize) {
+                canvas.drawCircle(event.getHistoricalX(p, h), event.getHistoricalY(p, h), radius, paint)
+            }
+        }
+    }
+
+    private fun drawTouch(canvas: Canvas, event: MotionEvent) {
+        for (p in 0 until event.pointerCount) {
+            val index = event.getPointerId(p)
+            paint.color = COLORS[index % COLORS.size]
+            canvas.drawCircle(event.getX(p), event.getY(p), radius, paint)
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
-        if (buffer?.run { width != canvas.width || height != canvas.width } == true) {
+        if (buffer == null || buffer.run { width != canvas.width || height != canvas.height }) {
             buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
-                this.canvas = Canvas(it).apply {
+                bufferCanvas = Canvas(it).apply {
                     drawColor(Color.WHITE)
                 }
             }
@@ -94,7 +100,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         buffer = null
-        canvas = null
+        bufferCanvas = null
     }
 
     companion object {

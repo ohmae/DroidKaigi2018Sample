@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     private class ListAdapter
     internal constructor(private val context: Context, list: List<Link>)
         : Adapter<ListAdapter.ViewHolder>() {
-        private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+        private val layoutInflater = LayoutInflater.from(context)
         private val links: List<Link> = ArrayList(list)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

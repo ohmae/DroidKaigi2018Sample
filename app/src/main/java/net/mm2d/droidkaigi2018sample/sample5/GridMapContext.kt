@@ -8,6 +8,7 @@
 package net.mm2d.droidkaigi2018sample.sample5
 
 import android.content.Context
+import android.support.v4.math.MathUtils.clamp
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -51,13 +52,13 @@ class GridMapContext internal constructor(context: Context) {
         ensureGridRange()
     }
 
-    internal fun onScaleControl(focusX: Float, focusY: Float, scaleX: Float, scaleY: Float) {
-        val newScaleX = clamp(this.scaleX * scaleX, scaleXMin, scaleXMax)
-        val newScaleY = clamp(this.scaleY * scaleY, scaleYMin, scaleYMax)
-        x -= focusX / newScaleX - focusX / this.scaleX
-        y -= focusY / newScaleY - focusY / this.scaleY
-        this.scaleX = newScaleX
-        this.scaleY = newScaleY
+    internal fun onScaleControl(focusX: Float, focusY: Float, scaleFactorX: Float, scaleFactorY: Float) {
+        val newScaleX = clamp(scaleX * scaleFactorX, scaleXMin, scaleXMax)
+        val newScaleY = clamp(scaleY * scaleFactorY, scaleYMin, scaleYMax)
+        x -= focusX / newScaleX - focusX / scaleX
+        y -= focusY / newScaleY - focusY / scaleY
+        scaleX = newScaleX
+        scaleY = newScaleY
         ensureGridRange()
     }
 
@@ -69,9 +70,5 @@ class GridMapContext internal constructor(context: Context) {
     companion object {
         private val GRID_X = 400
         private val GRID_Y = 400
-
-        private fun clamp(value: Float, min: Float, max: Float): Float {
-            return Math.min(Math.max(value, min), max)
-        }
     }
 }
