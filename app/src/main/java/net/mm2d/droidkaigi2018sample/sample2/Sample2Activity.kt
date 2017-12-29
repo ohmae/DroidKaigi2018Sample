@@ -19,14 +19,14 @@ import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.calculateDistance
 
 class Sample2Activity : AppCompatActivity() {
-    private var touchSlop: Int = 0
-    private var startX: Float = 0f
-    private var startY: Float = 0f
-    private var dragging: Boolean = false
-    private var prevX: Float = 0f
-    private var prevY: Float = 0f
-    private var velocityX: Float = 0f
-    private var velocityY: Float = 0f
+    private var touchSlop = 0
+    private var startX = 0f
+    private var startY = 0f
+    private var dragging = false
+    private var prevX = 0f
+    private var prevY = 0f
+    private var velocityX = 0f
+    private var velocityY = 0f
     private var velocityTracker: VelocityTracker? = null
     private var animator: Animator? = null
 

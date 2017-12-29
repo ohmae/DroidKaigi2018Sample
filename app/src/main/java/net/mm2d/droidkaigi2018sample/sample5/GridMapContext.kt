@@ -27,8 +27,8 @@ class GridMapContext internal constructor(context: Context) {
         private set
     internal var y = 0f
         private set
-    private var viewWidth: Int = 0
-    private var viewHeight: Int = 0
+    private var viewWidth = 0
+    private var viewHeight = 0
 
     init {
         val density = context.resources.displayMetrics.density

@@ -18,13 +18,13 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
     @Dimension
     private val minimumSpan: Float
     @Dimension
-    private var prevFocusX: Float = 0f
+    private var prevFocusX = 0f
     @Dimension
-    private var prevFocusY: Float = 0f
+    private var prevFocusY = 0f
     @Dimension
-    private var prevSpanX: Float = 0f
+    private var prevSpanX = 0f
     @Dimension
-    private var prevSpanY: Float = 0f
+    private var prevSpanY = 0f
 
     interface GestureListener {
         fun onMove(@Dimension deltaX: Float, @Dimension deltaY: Float)

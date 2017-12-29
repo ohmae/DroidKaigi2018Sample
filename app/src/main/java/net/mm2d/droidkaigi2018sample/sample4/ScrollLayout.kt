@@ -24,12 +24,12 @@ class ScrollLayout
 constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : FrameLayout(context, attrs, defStyleAttr) {
 
-    private var touchSlop: Float = 0f
-    private var startX: Float = 0f
-    private var startY: Float = 0f
-    private var dragging: Boolean = false
-    private var prevX: Float = 0f
-    private var prevY: Float = 0f
+    private var touchSlop = 0f
+    private var startX = 0f
+    private var startY = 0f
+    private var dragging = false
+    private var prevX = 0f
+    private var prevY = 0f
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         val action = event.actionMasked

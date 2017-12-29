@@ -34,7 +34,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     private var buffer: Bitmap? = null
     private var bufferCanvas: Canvas? = null
 
-    private var useHistory: Boolean = false
+    private var useHistory = false
 
     init {
         val resources = context.resources

@@ -22,8 +22,8 @@ class GridMapView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
         View(context, attrs, defStyleAttr) {
-    val gridMapContext: GridMapContext = GridMapContext(context)
-    private val paint: Paint = Paint().apply {
+    val gridMapContext = GridMapContext(context)
+    private val paint = Paint().apply {
         color = Color.BLACK
         isAntiAlias = true
     }
