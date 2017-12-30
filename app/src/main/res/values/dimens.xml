@@ -5,4 +5,5 @@
     <dimen name="sample1_radius">5dp</dimen>
     <dimen name="sample1_stroke_width">2dp</dimen>
     <dimen name="sample2_circle_radius">320dp</dimen>
+    <dimen name="icon_size">72dp</dimen>
 </resources>
