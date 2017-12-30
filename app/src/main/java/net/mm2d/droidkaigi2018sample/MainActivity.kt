@@ -64,21 +64,17 @@ class MainActivity : AppCompatActivity() {
     private class ListAdapter
     internal constructor(private val context: Context, list: List<Link>)
         : Adapter<ListAdapter.ViewHolder>() {
-        private val layoutInflater = LayoutInflater.from(context)
+        private val inflater = LayoutInflater.from(context)
         private val links: List<Link> = ArrayList(list)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = layoutInflater.inflate(R.layout.li_main_link, parent, false)
-            return ViewHolder(view)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            ViewHolder(inflater.inflate(R.layout.li_main_link, parent, false))
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.apply(links[position])
         }
 
-        override fun getItemCount(): Int {
-            return links.size
-        }
+        override fun getItemCount(): Int = links.size
 
         internal inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             private val textView: TextView = itemView.findViewById(R.id.text)

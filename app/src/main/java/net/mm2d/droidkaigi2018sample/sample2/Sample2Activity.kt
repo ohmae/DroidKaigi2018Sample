@@ -18,6 +18,17 @@ import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.calculateDistance
 
+/**
+ * タッチイベントを受け取りViewの移動を行うサンプル。
+ *
+ * ここでは、Viewを継承してonTouchEventをoverrideするのではなく、OnTouchListenerを使用しています。
+ * onTouchEventとOnTouchListener#onTouchがコールされる条件はほぼ同等で、
+ * OnTouchListenerが設定されている場合、OnTouchListenerが先にコールされます。
+ * OnTouchListenerが設定されていない場合、もしくはOnTouchListener#onTouchがfalseを返した場合に、
+ * onTouchEventがコールされます。
+ *
+ * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
+ */
 class Sample2Activity : AppCompatActivity() {
     private var touchSlop = 0
     private var startX = 0f
@@ -82,7 +93,7 @@ class Sample2Activity : AppCompatActivity() {
     }
 
     private fun startInertialMove(v: View) {
-        velocityTracker?.apply {
+        velocityTracker?.run {
             computeCurrentVelocity(1)
             velocityX = xVelocity * FRAME_INTERVAL
             velocityY = yVelocity * FRAME_INTERVAL

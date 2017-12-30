@@ -17,6 +17,11 @@ import android.widget.FrameLayout
 import net.mm2d.droidkaigi2018sample.util.calculateDistance
 
 /**
+ * フリック操作を元に子Viewの位置を移動させる。
+ *
+ * 子Viewはクリックを受け付ける可能性もあれば、何もしない可能性もあり、
+ * また子ViewではなくこのViewが直接タッチされる可能性がある状況で適切にイベントを伝搬させるようにする。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class ScrollLayout

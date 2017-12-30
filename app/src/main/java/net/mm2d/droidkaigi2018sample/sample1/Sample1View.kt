@@ -22,6 +22,10 @@ import android.view.View
 import net.mm2d.droidkaigi2018sample.R
 
 /**
+ * タッチイベントを受け取り、その座標を描画するView。
+ *
+ * 履歴の情報を使わないと荒い単位でしか座標がとれないことが分かります。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample1View

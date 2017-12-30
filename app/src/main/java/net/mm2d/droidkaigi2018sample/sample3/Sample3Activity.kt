@@ -18,6 +18,10 @@ import kotlinx.android.synthetic.main.activity_sample3.*
 import net.mm2d.droidkaigi2018sample.R
 
 /**
+ * オーバーレイ表示するViewにもうけた穴のタッチイベントを下のViewに伝えるサンプル。
+ *
+ * オーバーレイ表示しているViewのonTouchEventの戻り値で制御します。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample3Activity : AppCompatActivity() {

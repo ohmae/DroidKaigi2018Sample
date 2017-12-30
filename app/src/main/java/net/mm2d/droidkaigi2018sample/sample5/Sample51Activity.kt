@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.activity_sample5.*
 import net.mm2d.droidkaigi2018sample.R
 
 /**
+ * ピンチ操作できるグリッドのサンプル。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample51Activity : AppCompatActivity() {
