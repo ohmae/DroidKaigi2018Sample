@@ -109,18 +109,18 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     companion object {
         private val COLORS = intArrayOf(
-                Color.argb(255, 255, 128, 128),
-                Color.argb(255, 255, 255, 128),
-                Color.argb(255, 128, 255, 128),
-                Color.argb(255, 128, 255, 255),
-                Color.argb(255, 128, 128, 255),
-                Color.argb(255, 255, 128, 255),
-                Color.argb(255, 255, 192, 128),
-                Color.argb(255, 192, 255, 128),
-                Color.argb(255, 128, 255, 192),
-                Color.argb(255, 128, 192, 255),
-                Color.argb(255, 192, 128, 255),
-                Color.argb(255, 255, 128, 192)
+                Color.argb(255, 0, 0, 255),
+                Color.argb(255, 255, 0, 255),
+                Color.argb(255, 255, 0, 0),
+                Color.argb(255, 255, 255, 0),
+                Color.argb(255, 0, 255, 0),
+                Color.argb(255, 0, 255, 255),
+                Color.argb(255, 128, 0, 255),
+                Color.argb(255, 255, 0, 128),
+                Color.argb(255, 255, 128, 0),
+                Color.argb(255, 128, 255, 0),
+                Color.argb(255, 0, 255, 128),
+                Color.argb(255, 0, 128, 255)
         )
     }
 }
