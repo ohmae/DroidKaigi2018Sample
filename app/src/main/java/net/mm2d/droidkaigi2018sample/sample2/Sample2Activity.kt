@@ -53,7 +53,7 @@ class Sample2Activity : AppCompatActivity() {
         val tracker = velocityTracker ?: VelocityTracker.obtain()
         velocityTracker = tracker
         MotionEvent.obtain(event).let {
-            it.offsetLocation(v.translationX, v.translationY)
+            it.offsetLocation(event.rawX - event.x, event.rawY - event.y)
             tracker.addMovement(it)
             it.recycle()
         }
