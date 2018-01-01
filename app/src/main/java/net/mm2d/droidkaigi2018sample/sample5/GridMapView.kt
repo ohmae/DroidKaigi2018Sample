@@ -35,15 +35,15 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         val scaleY = gridMapContext.scaleY
         val startX = (px.toInt() - px) * scaleX
         val startY = (py.toInt() - py) * scaleY
-        var even = (px.toInt() + py.toInt()) % 2 == 0
+        var lightColor = (px.toInt() + py.toInt()) % 2 == 0
         var y = startY
         while (y < height) {
-            var work = even
-            even = !even
+            var light = lightColor
+            lightColor = !lightColor
             var x = startX
             while (x < width) {
-                paint.color = if (work) Color.BLUE else Color.BLACK
-                work = !work
+                paint.color = if (light) Color.GRAY else Color.BLACK
+                light = !light
                 canvas.drawRect(x, y, x + scaleX, y + scaleY, paint)
                 x += scaleX
             }

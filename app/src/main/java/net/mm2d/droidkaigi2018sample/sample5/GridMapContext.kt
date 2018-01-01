@@ -23,9 +23,9 @@ class GridMapContext internal constructor(context: Context) {
         private set
     internal var scaleY = 100f
         private set
-    internal var x = 0f
+    internal var x = 40f
         private set
-    internal var y = 0f
+    internal var y = 40f
         private set
     private var viewWidth = 0
     private var viewHeight = 0

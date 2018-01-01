@@ -100,6 +100,6 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
 
     companion object {
         @Dimension(unit = Dimension.DP)
-        private val MINIMUM_SPAN = 50.0f
+        private val MINIMUM_SPAN = 20.0f
     }
 }
