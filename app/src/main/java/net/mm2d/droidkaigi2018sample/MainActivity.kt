@@ -32,6 +32,8 @@ import net.mm2d.log.Log
 import java.util.*
 
 /**
+ * ここから各画面を起動する。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MainActivity : AppCompatActivity() {

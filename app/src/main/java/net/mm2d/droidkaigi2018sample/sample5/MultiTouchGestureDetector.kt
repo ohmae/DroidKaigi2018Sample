@@ -12,6 +12,8 @@ import android.support.annotation.Dimension
 import android.view.MotionEvent
 
 /**
+ * マルチタッチによるピンチ操作を判定するDetector
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MultiTouchGestureDetector(context: Context, private val mListener: GestureListener) {
@@ -47,11 +49,17 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
             MotionEvent.ACTION_MOVE ->
                 handleMotionEvent(event, true)
             MotionEvent.ACTION_POINTER_DOWN -> {
+                // ポインタが増えたイベント
+                // 今回増えたポインタ以外で一度差分計算、通知を行う
                 handleMotionEvent(event, true, true)
+                // 次回のイベント発生時に差分を計算するため、イベントポインタを含めて現在値の計算を行う
                 handleMotionEvent(event, false, false)
             }
             MotionEvent.ACTION_POINTER_UP -> {
+                // ポインタが減るイベント
+                // 次回以降なくなるポインタを含めて差分を計算し、通知を行う
                 handleMotionEvent(event, true, false)
+                // 次回以降なくなるポインタを除いて、現在値の計算を行う
                 handleMotionEvent(event, false, true)
             }
         }
@@ -62,6 +70,7 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
         val skipIndex = if (excludeActionPointer) event.actionIndex else -1
         val div = if (excludeActionPointer) count - 1 else count
 
+        // ポインタの中心座標を求める
         var sumX = 0f
         var sumY = 0f
         for (i in 0 until count) {
@@ -72,6 +81,7 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
         val focusX = sumX / div
         val focusY = sumY / div
 
+        // 中心座標から各ポインタへの距離の平均をピンチ操作の基準値とする
         var devSumX = 0f
         var devSumY = 0f
         for (i in 0 until count) {

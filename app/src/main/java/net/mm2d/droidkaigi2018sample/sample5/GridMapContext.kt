@@ -11,12 +11,30 @@ import android.content.Context
 import android.support.v4.math.MathUtils.clamp
 
 /**
+ * グリッド表示のコンテキスト。
+ *
+ * 1グリッドを1としたマップがあり、
+ * その上の表示領域を示す窓の位置と拡大率を保持することで表現する。
+ * 1グリッドが1であるため、拡大率は実際に表示されるグリッドの長さ(pixel)に対応する。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class GridMapContext internal constructor(context: Context) {
+    /**
+     * X軸方向の拡大率最小値
+     */
     private val scaleXMin: Float
+    /**
+     * Y軸方向の拡大率最小値
+     */
     private val scaleYMin: Float
+    /**
+     * X軸方向の拡大率最大値
+     */
     private val scaleXMax: Float
+    /**
+     * Y軸方向の拡大率最大値
+     */
     private val scaleYMax: Float
 
     internal var scaleX = 100f
@@ -40,21 +58,42 @@ class GridMapContext internal constructor(context: Context) {
         scaleYMax = 1000f * density
     }
 
+    /**
+     * Viewのサイズを設定する。
+     */
     fun setViewSize(width: Int, height: Int) {
         viewWidth = width
         viewHeight = height
         ensureGridRange()
     }
 
+    /**
+     * 移動制御に伴う座標の変更を行う。
+     *
+     * @param deltaX X軸方向のグリッドの移動量
+     * @param deltaY Y軸方向のグリッドの移動量
+     */
     internal fun onMoveControl(deltaX: Float, deltaY: Float) {
+        // 引数は表示されているグリッドの移動量であるため
+        // 左上の座標の移動量は逆方向に拡大率で割った値となる。
         x -= deltaX / scaleX
         y -= deltaY / scaleY
         ensureGridRange()
     }
 
+    /**
+     * 拡大率の変更を行う。
+     *
+     * @param focusX ピンチ操作の中心座標
+     * @param focusY ピンチ操作の中心座標
+     * @param scaleFactorX X軸方向の拡大率の変化
+     * @param scaleFactorY Y軸方向の拡大率の変化
+     */
     internal fun onScaleControl(focusX: Float, focusY: Float, scaleFactorX: Float, scaleFactorY: Float) {
+        // 変更後の拡大率が最小値から最大値の範囲内に収まるように補正を行う
         val newScaleX = clamp(scaleX * scaleFactorX, scaleXMin, scaleXMax)
         val newScaleY = clamp(scaleY * scaleFactorY, scaleYMin, scaleYMax)
+        // 操作の中心座標までの距離の拡大率の変化に伴う変化分を移動させる
         x -= focusX / newScaleX - focusX / scaleX
         y -= focusY / newScaleY - focusY / scaleY
         scaleX = newScaleX
@@ -62,13 +101,22 @@ class GridMapContext internal constructor(context: Context) {
         ensureGridRange()
     }
 
+    /**
+     * 表示エリアがマップの範囲内に収まるように補正を行う。
+     */
     private fun ensureGridRange() {
         x = clamp(x, 0f, GRID_X - viewWidth / scaleX)
         y = clamp(y, 0f, GRID_Y - viewHeight / scaleY)
     }
 
     companion object {
+        /**
+         * X軸方向のグリッド数
+         */
         private val GRID_X = 400
+        /**
+         * Y軸方向のグリッド数
+         */
         private val GRID_Y = 400
     }
 }

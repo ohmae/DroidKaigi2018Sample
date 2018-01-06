@@ -16,6 +16,10 @@ import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.sample5.MultiTouchGestureDetector.GestureListener
 
 /**
+ * ピンチ操作できるグリッドのサンプル。
+ *
+ * [MultiTouchGestureDetector]を利用するバターン
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample52Activity : AppCompatActivity() {

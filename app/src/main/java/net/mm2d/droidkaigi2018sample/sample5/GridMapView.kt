@@ -35,6 +35,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         val scaleY = gridMapContext.scaleY
         val startX = (px.toInt() - px) * scaleX
         val startY = (py.toInt() - py) * scaleY
+        // 塗り分け判定
         var lightColor = (px.toInt() + py.toInt()) % 2 == 0
         var y = startY
         while (y < height) {

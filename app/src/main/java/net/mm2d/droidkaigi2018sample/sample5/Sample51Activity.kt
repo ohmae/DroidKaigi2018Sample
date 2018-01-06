@@ -21,6 +21,8 @@ import net.mm2d.droidkaigi2018sample.R
 /**
  * ピンチ操作できるグリッドのサンプル。
  *
+ * [GestureDetector]と[ScaleGestureDetector]を利用するバターン
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample51Activity : AppCompatActivity() {
