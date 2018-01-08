@@ -38,9 +38,9 @@ class Sample51Activity : AppCompatActivity() {
     private fun setUpGridMap() {
         val scaleDetector = ScaleGestureDetector(this, object : SimpleOnScaleGestureListener() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
-                val scaleX = detector.currentSpanX / detector.previousSpanX
-                val scaleY = detector.currentSpanY / detector.previousSpanY
-                gridMap.gridMapContext.onScaleControl(detector.focusX, detector.focusY, scaleX, scaleY)
+                val scaleFactorX = detector.currentSpanX / detector.previousSpanX
+                val scaleFactorY = detector.currentSpanY / detector.previousSpanY
+                gridMap.gridMapContext.onScaleControl(detector.focusX, detector.focusY, scaleFactorX, scaleFactorY)
                 gridMap.invalidate()
                 return true
             }
@@ -52,6 +52,7 @@ class Sample51Activity : AppCompatActivity() {
                 return true
             }
         })
+        // 2つのdetectorにeventを渡す
         gridMap.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
             scaleDetector.onTouchEvent(event)

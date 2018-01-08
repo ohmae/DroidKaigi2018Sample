@@ -37,15 +37,33 @@ class GridMapContext internal constructor(context: Context) {
      */
     private val scaleYMax: Float
 
-    internal var scaleX = 100f
-        private set
-    internal var scaleY = 100f
-        private set
+    /**
+     * X座標
+     */
     internal var x = 40f
         private set
+    /**
+     * Y座標
+     */
     internal var y = 40f
         private set
+    /**
+     * X軸方向の拡大率
+     */
+    internal var scaleX = 100f
+        private set
+    /**
+     * Y軸方向の拡大率
+     */
+    internal var scaleY = 100f
+        private set
+    /**
+     * Viewの幅
+     */
     private var viewWidth = 0
+    /**
+     * Viewの高さ
+     */
     private var viewHeight = 0
 
     init {

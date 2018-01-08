@@ -25,6 +25,7 @@ class Sample4Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample4)
         setSupportActionBar(toolbar)
+        // 子ViewのOnClickListenerでクリック判定を行う
         icon.setOnClickListener {
             Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
         }

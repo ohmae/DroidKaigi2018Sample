@@ -17,6 +17,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.calculateDistance
+import net.mm2d.droidkaigi2018sample.util.calculateDistanceSquare
 
 /**
  * タッチイベントを受け取りViewの移動を行うサンプル。
@@ -30,7 +31,10 @@ import net.mm2d.droidkaigi2018sample.util.calculateDistance
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample2Activity : AppCompatActivity() {
-    private var touchSlop = 0
+    private val touchSlopSquare by lazy {
+        val touchSlop = ViewConfiguration.get(this).scaledTouchSlop
+        touchSlop * touchSlop
+    }
     private var startX = 0f
     private var startY = 0f
     private var dragging = false
@@ -45,36 +49,59 @@ class Sample2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample2)
         icon.setOnTouchListener { v, event -> onTouch(v, event) }
-        touchSlop = ViewConfiguration.get(this).scaledTouchSlop
     }
 
-    private fun onTouch(v: View, event: MotionEvent): Boolean {
-        val action = event.actionMasked
+    /**
+     * ViewのonTouch処理。
+     *
+     * @param view  対象View
+     * @param event MotionEvent
+     */
+    private fun onTouch(view: View, event: MotionEvent): Boolean {
+        // VelocityTrackerのインスタンスを使い回すための処理
         val tracker = velocityTracker ?: VelocityTracker.obtain()
         velocityTracker = tracker
         MotionEvent.obtain(event).let {
+            // Viewがタッチに反応して移動するため
+            // VelocityTrackerにはMotionEventをそのまま渡すと正しい速度が計算できません。
+            // copyを作成し、座標の補正を行った上でVelocityTrackerに渡します。
+            // 直接offsetLocationで座標の補正を行ってもよいですが
+            // その場合、処理を抜ける前に座標を戻しておかないとこの先のイベントの伝搬すべてに影響が及んでしまいます。
             it.offsetLocation(event.rawX - event.x, event.rawY - event.y)
             tracker.addMovement(it)
             it.recycle()
         }
-        when (action) {
+        // 無駄にインスタンスを作らないパターン
+        // val dx = event.rawX - event.x
+        // val dy = event.rawY - event.y
+        // event.offsetLocation(dx, dy)
+        // tracker.addMovement(event)
+        // event.offsetLocation(-dx, -dy)
+        when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 stopInertialMove()
                 dragging = false
                 startX = event.rawX
                 startY = event.rawY
             }
-            MotionEvent.ACTION_MOVE -> if (dragging) {
-                moveOffset(v, event.rawX - prevX, event.rawY - prevY)
-            } else if (calculateDistance(event.rawX - startX, event.rawY - startY) > touchSlop) {
-                dragging = true
-            }
+            MotionEvent.ACTION_MOVE ->
+                // 移動距離がtouchSlopを超えるまでドラッグ動作を行わない
+                if (dragging) {
+                    moveOffset(view, event.rawX - prevX, event.rawY - prevY)
+                } else if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+                    dragging = true
+                }
             MotionEvent.ACTION_UP -> {
                 if (dragging) {
-                    startInertialMove(v)
+                    startInertialMove(view)
                 } else {
+                    // ドラッグが発生する前に指が離れたらタップと判定する
                     Toast.makeText(this, "Tapped", Toast.LENGTH_SHORT).show()
                 }
+                tracker.recycle()
+                velocityTracker = null
+            }
+            MotionEvent.ACTION_CANCEL -> {
                 tracker.recycle()
                 velocityTracker = null
             }
@@ -92,24 +119,38 @@ class Sample2Activity : AppCompatActivity() {
         v.translationY = clamp(transitionY, 0f, (parent.height - v.height).toFloat())
     }
 
-    private fun startInertialMove(v: View) {
+    /**
+     * タッチが終了した後それまでの移動速度に応じた慣性アニメーションを開始。
+     *
+     * @param view 対象View
+     */
+    private fun startInertialMove(view: View) {
+        // 1フレームあたりの移動距離を計算する
         velocityTracker?.run {
-            computeCurrentVelocity(1)
-            velocityX = xVelocity * FRAME_INTERVAL
-            velocityY = yVelocity * FRAME_INTERVAL
+            computeCurrentVelocity(FRAME_INTERVAL)
+            velocityX = xVelocity
+            velocityY = yVelocity
         }
+        // 速度の絶対値を求める
         val velocity = calculateDistance(velocityX, velocityY)
         if (velocity < 1f) {
             return
         }
-        val d = (Math.log((1.0 / velocity)) / Math.log(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
+        // 移動速度が1を下回るまでの時間を計算する
+        val assumedDuration = (Math.log((1.0 / velocity)) / Math.log(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
+        if (assumedDuration <= 0) {
+            return
+        }
         animator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = Math.max(0, d)
-            addUpdateListener { _ -> inertialMove(v) }
+            duration = assumedDuration
+            addUpdateListener { _ -> inertialMove(view) }
             start()
         }
     }
 
+    /**
+     * 慣性移動の停止。
+     */
     private fun stopInertialMove() {
         if (animator?.isRunning == true) {
             animator?.cancel()
@@ -117,26 +158,36 @@ class Sample2Activity : AppCompatActivity() {
         animator = null
     }
 
-    private fun inertialMove(v: View) {
-        val parent = v.parent as? ViewGroup ?: return
-        val transitionX = v.translationX + velocityX
-        val transitionY = v.translationY + velocityY
-        val maxX = (parent.width - v.width).toFloat()
-        val maxY = (parent.height - v.height).toFloat()
-        v.translationX = clamp(transitionX, 0f, maxX)
-        v.translationY = clamp(transitionY, 0f, maxY)
+    /**
+     * 慣性移動を行う。
+     *
+     * @param view 対象のView
+     */
+    private fun inertialMove(view: View) {
+        val parent = view.parent as? ViewGroup ?: return
+        val transitionX = view.translationX + velocityX
+        val transitionY = view.translationY + velocityY
+        val maxX = (parent.width - view.width).toFloat()
+        val maxY = (parent.height - view.height).toFloat()
+        // 画面からはみ出さない範囲に移動
+        view.translationX = clamp(transitionX, 0f, maxX)
+        view.translationY = clamp(transitionY, 0f, maxY)
+        // 画面端まで移動したら速度を反転させる
         if (transitionX <= 0f || transitionX >= maxX) {
             velocityX *= -1f
         }
         if (transitionY <= 0f || transitionY >= maxY) {
             velocityY *= -1f
         }
+        // 速度を減衰させる
         velocityX *= DECELERATION_RATE
         velocityY *= DECELERATION_RATE
     }
 
     companion object {
+        // 慣性移動の減衰率
         private val DECELERATION_RATE = 0.95f
-        private val FRAME_INTERVAL = 16f
+        // 1フレームの時間、16msとしておく
+        private val FRAME_INTERVAL = 16
     }
 }

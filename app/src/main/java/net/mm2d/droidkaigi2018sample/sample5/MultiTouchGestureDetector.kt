@@ -12,26 +12,58 @@ import android.support.annotation.Dimension
 import android.view.MotionEvent
 
 /**
- * マルチタッチによるピンチ操作を判定するDetector
+ * マルチタッチによるピンチ操作を判定するクラス。
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MultiTouchGestureDetector(context: Context, private val mListener: GestureListener) {
+    /**
+     * スケール操作を判定する最小span
+     */
     @Dimension
     private val minimumSpan: Float
+    /**
+     * 直前の操作の中心のX座標
+     */
     @Dimension
     private var prevFocusX = 0f
+    /**
+     * 直前の操作の中心のY座標
+     */
     @Dimension
     private var prevFocusY = 0f
+    /**
+     * 直前のX方向のspan
+     */
     @Dimension
     private var prevSpanX = 0f
+    /**
+     * 直前のY方向のspan
+     */
     @Dimension
     private var prevSpanY = 0f
 
+    /**
+     * 移動とスケール変更のイベントを受け取るリスナー。
+     */
     interface GestureListener {
+        /**
+         * 移動イベントの通知。
+         *
+         * @param deltaX X軸方向の移動量
+         * @param deltaY Y軸方向の移動量
+         */
         fun onMove(@Dimension deltaX: Float, @Dimension deltaY: Float)
 
-        fun onScale(@Dimension focusX: Float, @Dimension focusY: Float, scaleX: Float, scaleY: Float)
+        /**
+         * スケール変更イベントの通知。
+         *
+         * @param focusX スケール操作の中心X座標
+         * @param focusY スケール操作の中心Y座標
+         * @param scaleFactorX X軸方向のスケールの変化分
+         * @param scaleFactorY Y軸方向のスケールの変化分
+         */
+        fun onScale(@Dimension focusX: Float, @Dimension focusY: Float, scaleFactorX: Float, scaleFactorY: Float)
     }
 
     init {
@@ -43,6 +75,7 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
         val action = event.actionMasked
         when (action) {
             MotionEvent.ACTION_DOWN ->
+                // 通知なしで現在値の計算を行う
                 handleMotionEvent(event, false)
             MotionEvent.ACTION_UP ->
                 handleMotionEvent(event, true)
@@ -65,6 +98,13 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
         }
     }
 
+    /**
+     * MotionEventのハンドリング。
+     *
+     * @param event MotionEvent
+     * @param notify Listener通知を行う場合true
+     * @param excludeActionPointer イベントポインタを計算から除外する場合true
+     */
     private fun handleMotionEvent(event: MotionEvent, notify: Boolean, excludeActionPointer: Boolean = false) {
         val count = event.pointerCount
         val skipIndex = if (excludeActionPointer) event.actionIndex else -1
@@ -93,6 +133,7 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
         val spanY = devSumY / div * 2
 
         if (notify) {
+            // 基準spanが小さすぎるとスケール変化が大きくなりすぎるので制約を設ける。
             val scaleX = if (prevSpanX < minimumSpan) 1.0f else spanX / prevSpanX
             val scaleY = if (prevSpanY < minimumSpan) 1.0f else spanY / prevSpanY
             val dX = focusX - prevFocusX

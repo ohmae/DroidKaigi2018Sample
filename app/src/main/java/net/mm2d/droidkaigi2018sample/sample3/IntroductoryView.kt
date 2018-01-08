@@ -28,9 +28,14 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import net.mm2d.droidkaigi2018sample.R
-import net.mm2d.droidkaigi2018sample.util.calculateDistance
+import net.mm2d.droidkaigi2018sample.util.calculateDistanceSquare
 
 /**
+ * 新機能アピール用のView
+ *
+ * 指定Viewが穴の中心になるように円形のViewを表示する。
+ * アニメーションのところはどうでもいいので、タッチに対する対応のみ解説。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class IntroductoryView
@@ -55,6 +60,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     private var centerY: Float = 0f
     private var circleRadius: Float = 0f
     private var holeRadius: Float = 0f
+    private var holeRadiusSquare: Float = 0f
     private var animator: Animator? = null
 
     @ColorInt
@@ -63,6 +69,24 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     init {
         LayoutInflater.from(context).inflate(R.layout.view_sample3_introductory, this)
         alpha = 0f
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (animator?.isRunning == true) {
+            // アニメーション中は下のViewに伝搬させない
+            return true
+        }
+        if (event.action == MotionEvent.ACTION_UP
+                || event.action == MotionEvent.ACTION_CANCEL) {
+            // タッチの終了で非表示にする
+            (parent as? ViewGroup)?.removeView(this)
+        }
+        // 穴の範囲内の場合のみ下のViewへタッチイベントを伝搬させ
+        // 「穴の中のみタッチに反応する」を実現する
+        val dx = event.x - centerX
+        val dy = event.y - centerY
+        return calculateDistanceSquare(dx, dy) >= holeRadiusSquare
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -75,6 +99,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         canvas.drawBitmap(buffer!!, 0f, 0f, null)
     }
 
+    /**
+     * バッファへの描画を行う
+     *
+     * @param canvas バッファへのCanvas
+     */
     private fun drawBuffer(canvas: Canvas) {
         canvas.drawColor(dimmerColor, PorterDuff.Mode.SRC)
         if (circleRadius == 0f) {
@@ -97,8 +126,10 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         targetView.getGlobalVisibleRect(rect)
         centerX = rect.centerX().toFloat()
         centerY = rect.centerY().toFloat()
-        val targetHoleRadius = calculateDistance(rect.width().toFloat(), rect.height().toFloat()) / 2f
+        holeRadiusSquare = calculateDistanceSquare(rect.width().toFloat(), rect.height().toFloat()) / 4f
+        val targetHoleRadius = Math.sqrt(holeRadiusSquare.toDouble()).toFloat()
         setPadding(paddingLeft, (centerY + targetHoleRadius).toInt(), paddingRight, paddingBottom)
+        // Dimmer効果の後、円と穴のアニメーションを開始する
         animator = AnimatorSet().apply {
             val dimmerAnimator = createDimmerAnimator()
             val circleAnimator = createCircleAnimator()
@@ -109,6 +140,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         }
     }
 
+    /**
+     * Dimmer効果のアニメーターを作成する。
+     *
+     * @return アニメーター
+     */
     private fun createDimmerAnimator(): Animator {
         return ValueAnimator.ofFloat(0f, 1f).apply {
             addUpdateListener { animation -> alpha = animation.animatedValue as Float }
@@ -118,6 +154,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         }
     }
 
+    /**
+     * 円を描画するアニメーターを作成する。
+     *
+     * @return アニメーター
+     */
     private fun createCircleAnimator(): Animator {
         val radius = context.resources.getDimension(R.dimen.sample2_circle_radius)
         return ValueAnimator.ofFloat(0f, radius).apply {
@@ -131,6 +172,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         }
     }
 
+    /**
+     * 穴のアニメーターを作成する。
+     *
+     * @return アニメーター
+     */
     private fun createHoleAnimator(targetRadius: Float): Animator {
         return ValueAnimator.ofFloat(0f, targetRadius).apply {
             interpolator = OvershootInterpolator()
@@ -141,20 +187,6 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                 invalidate()
             }
         }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (animator?.isRunning == true) {
-            return true
-        }
-        if (event.action == MotionEvent.ACTION_UP) {
-            val parent = parent as? ViewGroup
-            parent?.removeView(this)
-        }
-        val dx = event.x - centerX
-        val dy = event.y - centerY
-        return calculateDistance(dx, dy) >= holeRadius
     }
 
     private fun stopAnimation() {

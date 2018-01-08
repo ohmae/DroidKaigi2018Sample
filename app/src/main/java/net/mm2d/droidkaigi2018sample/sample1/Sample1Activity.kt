@@ -28,6 +28,7 @@ class Sample1Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample1)
         setSupportActionBar(toolbar)
+        // スイッチのon/offでhistory表示の切り替えを行う
         historySwitch.setOnCheckedChangeListener { _, isChecked ->
             sample1View.setUseHistory(isChecked)
         }

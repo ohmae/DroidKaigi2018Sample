@@ -58,40 +58,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         this.useHistory = useHistory
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        bufferCanvas?.let {
-            if (useHistory) {
-                drawTouchWithHistory(it, event)
-            } else {
-                drawTouch(it, event)
-            }
-        }
-        invalidate()
-        return true
-    }
-
-    private fun drawTouchWithHistory(canvas: Canvas, event: MotionEvent) {
-        val historySize = event.historySize
-        for (p in 0 until event.pointerCount) {
-            val index = event.getPointerId(p)
-            paint.color = COLORS[index % COLORS.size]
-            for (h in 0 until historySize) {
-                canvas.drawCircle(event.getHistoricalX(p, h), event.getHistoricalY(p, h), radius, paint)
-            }
-        }
-    }
-
-    private fun drawTouch(canvas: Canvas, event: MotionEvent) {
-        for (p in 0 until event.pointerCount) {
-            val index = event.getPointerId(p)
-            paint.color = COLORS[index % COLORS.size]
-            canvas.drawCircle(event.getX(p), event.getY(p), radius, paint)
-        }
-    }
-
+    /*
+     * 描画はバッファを書き出すのみ、バッファサイズとキャンバスのサイズが異なっていれば再構築する
+     */
     override fun onDraw(canvas: Canvas) {
-        if (buffer == null || buffer.run { width != canvas.width || height != canvas.height }) {
+        if (buffer == null || buffer!!.width != canvas.width || buffer!!.height != canvas.height) {
             buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
                 bufferCanvas = Canvas(it).apply {
                     drawColor(Color.WHITE)
@@ -107,7 +78,59 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         bufferCanvas = null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        bufferCanvas?.let {
+            if (useHistory) {
+                drawTouchWithHistory(it, event)
+            } else {
+                drawTouch(it, event)
+            }
+        }
+        invalidate()
+        return true
+    }
+
+    /**
+     * タッチポインタを描画する。
+     *
+     * @param canvas 描画先
+     * @param event MotionEvent
+     */
+    private fun drawTouch(canvas: Canvas, event: MotionEvent) {
+        for (i in 0 until event.pointerCount) {
+            // IDに紐付いて色を分ける
+            val id = event.getPointerId(i)
+            paint.color = COLORS[id % COLORS.size]
+            canvas.drawCircle(event.getX(i), event.getY(i), radius, paint)
+        }
+    }
+
+    /**
+     * タッチポインタを履歴を含めて描画する。
+     *
+     * @param canvas 描画先
+     * @param event MotionEvent
+     */
+    private fun drawTouchWithHistory(canvas: Canvas, event: MotionEvent) {
+        val historySize = event.historySize
+        for (i in 0 until event.pointerCount) {
+            val id = event.getPointerId(i)
+            paint.color = COLORS[id % COLORS.size]
+            if (historySize == 0) {
+                // ACTION_MOVE以外はhistorySizeは0になるためカレントを描画
+                canvas.drawCircle(event.getX(i), event.getY(i), radius, paint)
+            } else {
+                for (h in 0 until historySize) {
+                    // historyは数字が小さい方が古い情報
+                    canvas.drawCircle(event.getHistoricalX(i, h), event.getHistoricalY(i, h), radius, paint)
+                }
+            }
+        }
+    }
+
     companion object {
+        // 塗り分け用色
         private val COLORS = intArrayOf(
                 Color.argb(255, 0, 0, 255),
                 Color.argb(255, 255, 0, 255),

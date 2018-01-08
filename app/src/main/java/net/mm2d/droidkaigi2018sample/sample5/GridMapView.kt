@@ -14,8 +14,13 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 
-
 /**
+ * グリッド表示を行うView。
+ *
+ * [GridMapContext]の情報を元に描画を行う。
+ * 描画そのものは工夫も特になく、
+ * パラメータに従って矩形を描画しているだけ。
+ *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class GridMapView

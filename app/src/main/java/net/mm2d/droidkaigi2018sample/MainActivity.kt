@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         private val links: List<Link> = ArrayList(list)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(inflater.inflate(R.layout.li_main_link, parent, false))
+                ViewHolder(inflater.inflate(R.layout.li_main_link, parent, false))
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.apply(links[position])
