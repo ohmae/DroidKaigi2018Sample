@@ -118,7 +118,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             val id = event.getPointerId(i)
             paint.color = COLORS[id % COLORS.size]
             if (historySize == 0) {
-                // ACTION_MOVE以外はhistorySizeは0になるためカレントを描画
+                // 履歴がない場合はカレントを描画
                 canvas.drawCircle(event.getX(i), event.getY(i), radius, paint)
             } else {
                 for (h in 0 until historySize) {
