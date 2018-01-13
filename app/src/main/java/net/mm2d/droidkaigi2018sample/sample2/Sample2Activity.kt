@@ -16,8 +16,8 @@ import android.view.*
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
-import net.mm2d.droidkaigi2018sample.util.calculateDistance
-import net.mm2d.droidkaigi2018sample.util.calculateDistanceSquare
+import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
+import net.mm2d.droidkaigi2018sample.util.hypotenuse
 
 /**
  * タッチイベントを受け取りViewの移動を行うサンプル。
@@ -88,7 +88,7 @@ class Sample2Activity : AppCompatActivity() {
                 // 移動距離がtouchSlopを超えるまでドラッグ動作を行わない
                 if (dragging) {
                     moveOffset(view, event.rawX - prevX, event.rawY - prevY)
-                } else if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+                } else if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
                     dragging = true
                 }
             MotionEvent.ACTION_UP -> {
@@ -132,7 +132,7 @@ class Sample2Activity : AppCompatActivity() {
             velocityY = yVelocity
         }
         // 速度の絶対値を求める
-        val velocity = calculateDistance(velocityX, velocityY)
+        val velocity = hypotenuse(velocityX, velocityY)
         if (velocity < 1f) {
             return
         }

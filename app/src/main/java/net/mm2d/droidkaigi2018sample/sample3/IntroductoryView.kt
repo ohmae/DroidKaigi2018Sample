@@ -28,7 +28,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import net.mm2d.droidkaigi2018sample.R
-import net.mm2d.droidkaigi2018sample.util.calculateDistanceSquare
+import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 
 /**
  * 新機能アピール用のView
@@ -86,7 +86,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         // 「穴の中のみタッチに反応する」を実現する
         val dx = event.x - centerX
         val dy = event.y - centerY
-        return calculateDistanceSquare(dx, dy) >= holeRadiusSquare
+        return hypotenuseSquare(dx, dy) >= holeRadiusSquare
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -126,7 +126,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         targetView.getGlobalVisibleRect(rect)
         centerX = rect.centerX().toFloat()
         centerY = rect.centerY().toFloat()
-        holeRadiusSquare = calculateDistanceSquare(rect.width().toFloat(), rect.height().toFloat()) / 4f
+        holeRadiusSquare = hypotenuseSquare(rect.width().toFloat(), rect.height().toFloat()) / 4f
         val targetHoleRadius = Math.sqrt(holeRadiusSquare.toDouble()).toFloat()
         setPadding(paddingLeft, (centerY + targetHoleRadius).toInt(), paddingRight, paddingBottom)
         // Dimmer効果の後、円と穴のアニメーションを開始する

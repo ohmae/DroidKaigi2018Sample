@@ -430,7 +430,7 @@ private fun onTouch(view: View, event: MotionEvent): Boolean {
         MotionEvent.ACTION_MOVE ->
             if (dragging) {
                 moveOffset(view, event.rawX - prevX, event.rawY - prevY)
-            } else if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+            } else if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
                 dragging = true
             }
         MotionEvent.ACTION_UP -> {
@@ -442,6 +442,15 @@ private fun onTouch(view: View, event: MotionEvent): Boolean {
     prevX = event.rawX
     prevY = event.rawY
     return true
+}
+```
+
+途中利用している`hypotenuseSquare()`は以下のような定義の2値の自乗和を求める独自関数です。
+よく利用するので関数定義しています。
+
+```kotlin
+fun hypotenuseSquare(x: Float, y: Float): Float {
+    return x * x + y * y
 }
 ```
 
@@ -566,11 +575,7 @@ Overrideして実装を完全に書き換えるということは通常やらな
 override fun onTouchEvent(event: MotionEvent): Boolean {
     val dx = event.x - centerX
     val dy = event.y - centerY
-    return calculateDistanceSquare(dx, dy) >= holeRadiusSquare
-}
-
-fun calculateDistanceSquare(x: Float, y: Float): Float {
-    return x * x + y * y
+    return hypotenuseSquare(dx, dy) >= holeRadiusSquare
 }
 ```
 
@@ -625,7 +630,7 @@ override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
             startY = event.rawY
         }
         MotionEvent.ACTION_MOVE ->
-            if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+            if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
                 dragging = true
             }
     }
@@ -647,7 +652,7 @@ override fun onTouchEvent(event: MotionEvent): Boolean {
         MotionEvent.ACTION_MOVE -> {
             if (dragging) {
                 moveOffset(event.rawX - prevX, event.rawY - prevY)
-            } else if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+            } else if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
                 dragging = true
             }
         }

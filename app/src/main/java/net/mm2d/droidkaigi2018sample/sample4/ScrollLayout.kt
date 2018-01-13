@@ -15,7 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
-import net.mm2d.droidkaigi2018sample.util.calculateDistanceSquare
+import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 
 /**
  * フリック操作を元に子Viewの位置を移動させる。
@@ -49,7 +49,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                 startY = event.rawY
             }
             MotionEvent.ACTION_MOVE ->
-                if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+                if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
                     dragging = true
                 }
         }
@@ -66,7 +66,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             MotionEvent.ACTION_MOVE -> {
                 if (dragging) {
                     moveOffset(event.rawX - prevX, event.rawY - prevY)
-                } else if (calculateDistanceSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+                } else if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
                     // 子ViewがonTouchEvent()でfalseを返した場合や、直接タッチされた場合は、
                     // dragging状態になる前にonTouchEventでの処理となるため判定は両方で必要
                     dragging = true
