@@ -445,8 +445,7 @@ private fun onTouch(view: View, event: MotionEvent): Boolean {
 }
 ```
 
-途中利用している`hypotenuseSquare()`は以下のような定義の2値の自乗和を求める独自関数です。
-よく利用するので関数定義しています。
+途中利用している`hypotenuseSquare()`は以下のような定義の2値の二乗和を求める独自関数です。
 
 ```kotlin
 fun hypotenuseSquare(x: Float, y: Float): Float {
@@ -468,7 +467,7 @@ fun hypotenuseSquare(x: Float, y: Float): Float {
 `super.onTouchEvent()`の呼び出し方法を工夫すれば、`OnClickListener`でタップイベントを正しく受け取れるようにも作ることができます。
 近いことを後ほどやります。
 
-なお、前述の計算で距離をそのまま計算するのではなく、自乗和と距離の自乗を比較しているのは、
+なお、前述の計算で距離をそのまま計算するのではなく、二乗和と距離の二乗を比較しているのは、
 平方根の計算はコストが高いためです。
 平方根はとらなくても大小関係は変わりませんからね。
 
