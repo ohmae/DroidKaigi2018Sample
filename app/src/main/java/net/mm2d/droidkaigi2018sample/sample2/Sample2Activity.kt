@@ -16,8 +16,8 @@ import android.view.*
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
-import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 import net.mm2d.droidkaigi2018sample.util.hypotenuse
+import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 
 /**
  * タッチイベントを受け取りViewの移動を行うサンプル。
@@ -48,7 +48,7 @@ class Sample2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample2)
-        icon.setOnTouchListener { v, event -> onTouch(v, event) }
+        icon.setOnTouchListener(::onTouch)
     }
 
     /**

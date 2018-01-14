@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             private val textView: TextView = itemView.findViewById(R.id.text)
 
             fun apply(link: Link) {
-                itemView.setOnClickListener { _ -> link.startActivity(context) }
+                itemView.setOnClickListener { link.startActivity(context) }
                 textView.text = link.title.toUpperCase()
             }
         }
