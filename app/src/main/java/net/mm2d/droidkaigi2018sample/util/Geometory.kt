@@ -3,7 +3,7 @@ package net.mm2d.droidkaigi2018sample.util
 /**
  * 距離計算メソッド
  *
- * @author <a href="mailto:ryo@mm2d.net">大前良介 (OHMAE Ryosuke)</a>
+ * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 
 /**
