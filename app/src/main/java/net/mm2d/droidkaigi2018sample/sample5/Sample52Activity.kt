@@ -11,6 +11,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.annotation.Dimension
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sample5.*
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.sample5.MultiTouchGestureDetector.GestureListener
@@ -28,7 +29,16 @@ class Sample52Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample5)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setUpGridMap()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> return false
+        }
+        return true
     }
 
     @SuppressLint("ClickableViewAccessibility")

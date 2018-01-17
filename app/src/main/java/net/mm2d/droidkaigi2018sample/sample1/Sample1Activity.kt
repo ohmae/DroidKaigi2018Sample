@@ -28,6 +28,7 @@ class Sample1Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample1)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // スイッチのon/offでhistory表示の切り替えを行う
         historySwitch.setOnCheckedChangeListener { _, isChecked ->
             sample1View.setUseHistory(isChecked)
@@ -40,10 +41,11 @@ class Sample1Activity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_clear) {
-            sample1View.clear()
-            return true
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            R.id.action_clear -> sample1View.clear()
+            else -> return false
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 }

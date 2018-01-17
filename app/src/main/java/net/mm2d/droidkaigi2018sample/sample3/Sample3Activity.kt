@@ -9,6 +9,7 @@ package net.mm2d.droidkaigi2018sample.sample3
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -29,6 +30,7 @@ class Sample3Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample3)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // それぞれのボタンがタップされたらToastを表示する
         val listener = { v: View -> toast((v as TextView).text) }
         button1.setOnClickListener(listener)
@@ -37,6 +39,14 @@ class Sample3Activity : AppCompatActivity() {
         button4.setOnClickListener(listener)
         button5.setOnClickListener(listener)
         button6.setOnClickListener(listener)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> return false
+        }
+        return true
     }
 
     override fun onPostResume() {

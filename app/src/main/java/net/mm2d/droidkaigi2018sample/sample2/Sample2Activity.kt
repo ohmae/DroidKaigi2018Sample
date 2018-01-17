@@ -48,7 +48,16 @@ class Sample2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample2)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         icon.setOnTouchListener(::onTouch)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> return false
+        }
+        return true
     }
 
     /**

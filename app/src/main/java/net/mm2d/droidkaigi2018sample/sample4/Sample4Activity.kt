@@ -9,6 +9,7 @@ package net.mm2d.droidkaigi2018sample.sample4
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sample4.*
 import net.mm2d.droidkaigi2018sample.R
@@ -25,9 +26,18 @@ class Sample4Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample4)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // 子ViewのOnClickListenerでクリック判定を行う
         icon.setOnClickListener {
             Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> return false
+        }
+        return true
     }
 }
