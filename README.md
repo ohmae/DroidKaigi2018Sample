@@ -6,8 +6,6 @@
 
 [DroidKaigi 2018](https://droidkaigi.jp/2018/)で説明に使用するサンプルアプリです。
 
-[2018/02/08 14:50-15:20 - Room 2](https://droidkaigi.jp/2018/timetable?session=16679)
-
 ## Author
 大前 良介 (OHMAE Ryosuke)
 http://www.mm2d.net/
@@ -16,6 +14,11 @@ http://www.mm2d.net/
 [MIT License](./LICENSE)
 
 ---
+
+[2018/02/08 14:50-15:20 - Room 2](https://droidkaigi.jp/2018/timetable?session=16679)
+
+[資料](https://photos.app.goo.gl/mQICZtRwnjvTlS2K2)
+
 
 # タッチイベントを捕まえよう
 
