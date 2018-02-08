@@ -15,9 +15,12 @@ http://www.mm2d.net/
 
 ---
 
+## DroidKaigi 2018
+
 [2018/02/08 14:50-15:20 - Room 2](https://droidkaigi.jp/2018/timetable?session=16679)
 
-[資料](https://photos.app.goo.gl/mQICZtRwnjvTlS2K2)
+- [資料 (Google Photos)](https://photos.app.goo.gl/mQICZtRwnjvTlS2K2)
+- [資料 (One Drive)](https://1drv.ms/p/s!AjBzOpPBEOFljnKRJkjfxNp_F-0W)
 
 
 # タッチイベントを捕まえよう
