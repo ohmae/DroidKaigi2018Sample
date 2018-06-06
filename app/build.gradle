@@ -54,12 +54,12 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-    implementation 'com.android.support:design:27.0.2'
-    implementation 'net.mm2d:log:0.0.1'
-    implementation 'net.mm2d:log-android:0.0.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'net.mm2d:log:0.0.3'
+    implementation 'net.mm2d:log-android:0.0.3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     testImplementation 'junit:junit:4.12'
 }
