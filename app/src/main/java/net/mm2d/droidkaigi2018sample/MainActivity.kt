@@ -42,14 +42,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        recyclerView.adapter = ListAdapter(this, Arrays.asList(
+        recyclerView.adapter = ListAdapter(
+            this, Arrays.asList(
                 Link("sample1", Sample1Activity::class.java),
                 Link("sample2", Sample2Activity::class.java),
                 Link("sample3", Sample3Activity::class.java),
                 Link("sample4", Sample4Activity::class.java),
                 Link("sample5-1", Sample51Activity::class.java),
                 Link("sample5-2", Sample52Activity::class.java)
-        ))
+            )
+        )
     }
 
     private inner class Link
@@ -64,13 +66,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private class ListAdapter
-    internal constructor(private val context: Context, list: List<Link>)
-        : Adapter<ListAdapter.ViewHolder>() {
+    internal constructor(private val context: Context, list: List<Link>) :
+        Adapter<ListAdapter.ViewHolder>() {
         private val inflater = LayoutInflater.from(context)
         private val links: List<Link> = ArrayList(list)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-                ViewHolder(inflater.inflate(R.layout.li_main_link, parent, false))
+            ViewHolder(inflater.inflate(R.layout.li_main_link, parent, false))
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.apply(links[position])

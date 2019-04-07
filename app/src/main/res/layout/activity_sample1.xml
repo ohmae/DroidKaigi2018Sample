@@ -19,6 +19,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             >
+
             <Switch
                 android:id="@+id/historySwitch"
                 android:layout_width="wrap_content"

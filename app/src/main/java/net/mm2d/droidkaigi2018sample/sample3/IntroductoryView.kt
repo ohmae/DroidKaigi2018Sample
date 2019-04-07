@@ -38,10 +38,11 @@ import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class IntroductoryView
-@JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : FrameLayout(context, attrs, defStyleAttr) {
+class IntroductoryView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
     private var buffer: Bitmap? = null
     private var bufferCanvas: Canvas? = null
     private val path = Path()
@@ -64,7 +65,8 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     private var animator: Animator? = null
 
     @ColorInt
-    private val dimmerColor: Int = ContextCompat.getColor(context, R.color.sample2_introductory_dimmer)
+    private val dimmerColor: Int =
+        ContextCompat.getColor(context, R.color.sample2_introductory_dimmer)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_sample3_introductory, this)
@@ -78,7 +80,8 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             return true
         }
         if (event.action == MotionEvent.ACTION_UP
-                || event.action == MotionEvent.ACTION_CANCEL) {
+            || event.action == MotionEvent.ACTION_CANCEL
+        ) {
             // タッチの終了で非表示にする
             (parent as? ViewGroup)?.removeView(this)
         }

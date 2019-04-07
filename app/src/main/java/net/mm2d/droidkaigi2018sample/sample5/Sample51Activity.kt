@@ -50,13 +50,23 @@ class Sample51Activity : AppCompatActivity() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val scaleFactorX = detector.currentSpanX / detector.previousSpanX
                 val scaleFactorY = detector.currentSpanY / detector.previousSpanY
-                gridMap.gridMapContext.onScaleControl(detector.focusX, detector.focusY, scaleFactorX, scaleFactorY)
+                gridMap.gridMapContext.onScaleControl(
+                    detector.focusX,
+                    detector.focusY,
+                    scaleFactorX,
+                    scaleFactorY
+                )
                 gridMap.invalidate()
                 return true
             }
         })
         val gestureDetector = GestureDetector(this, object : SimpleOnGestureListener() {
-            override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+            override fun onScroll(
+                e1: MotionEvent,
+                e2: MotionEvent,
+                distanceX: Float,
+                distanceY: Float
+            ): Boolean {
                 gridMap.gridMapContext.onMoveControl(-distanceX, -distanceY)
                 gridMap.invalidate()
                 return true

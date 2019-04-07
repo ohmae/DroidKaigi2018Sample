@@ -97,7 +97,11 @@ class Sample2Activity : AppCompatActivity() {
                 // 移動距離がtouchSlopを超えるまでドラッグ動作を行わない
                 if (dragging) {
                     moveOffset(view, event.rawX - prevX, event.rawY - prevY)
-                } else if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+                } else if (hypotenuseSquare(
+                        event.rawX - startX,
+                        event.rawY - startY
+                    ) > touchSlopSquare
+                ) {
                     dragging = true
                 }
             MotionEvent.ACTION_UP -> {
@@ -146,7 +150,8 @@ class Sample2Activity : AppCompatActivity() {
             return
         }
         // 移動速度が1を下回るまでの時間を計算する
-        val assumedDuration = (Math.log((1.0 / velocity)) / Math.log(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
+        val assumedDuration =
+            (Math.log((1.0 / velocity)) / Math.log(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
         if (assumedDuration <= 0) {
             return
         }

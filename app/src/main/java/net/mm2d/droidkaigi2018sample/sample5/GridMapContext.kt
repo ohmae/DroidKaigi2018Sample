@@ -107,7 +107,12 @@ class GridMapContext internal constructor(context: Context) {
      * @param scaleFactorX X軸方向の拡大率の変化
      * @param scaleFactorY Y軸方向の拡大率の変化
      */
-    internal fun onScaleControl(focusX: Float, focusY: Float, scaleFactorX: Float, scaleFactorY: Float) {
+    internal fun onScaleControl(
+        focusX: Float,
+        focusY: Float,
+        scaleFactorX: Float,
+        scaleFactorY: Float
+    ) {
         // 変更後の拡大率が最小値から最大値の範囲内に収まるように補正を行う
         val newScaleX = clamp(scaleX * scaleFactorX, scaleXMin, scaleXMax)
         val newScaleY = clamp(scaleY * scaleFactorY, scaleYMin, scaleYMax)

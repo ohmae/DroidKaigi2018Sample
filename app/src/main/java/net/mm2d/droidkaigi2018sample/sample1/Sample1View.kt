@@ -28,10 +28,11 @@ import net.mm2d.droidkaigi2018sample.R
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class Sample1View
-@JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : View(context, attrs, defStyleAttr) {
+class Sample1View @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
     @Dimension
     private val radius: Float
     private val paint: Paint
@@ -123,7 +124,12 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             } else {
                 for (h in 0 until historySize) {
                     // historyは数字が小さい方が古い情報
-                    canvas.drawCircle(event.getHistoricalX(i, h), event.getHistoricalY(i, h), radius, paint)
+                    canvas.drawCircle(
+                        event.getHistoricalX(i, h),
+                        event.getHistoricalY(i, h),
+                        radius,
+                        paint
+                    )
                 }
             }
         }
@@ -132,18 +138,18 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     companion object {
         // 塗り分け用色
         private val COLORS = intArrayOf(
-                Color.argb(255, 0, 0, 255),
-                Color.argb(255, 255, 0, 255),
-                Color.argb(255, 255, 0, 0),
-                Color.argb(255, 255, 255, 0),
-                Color.argb(255, 0, 255, 0),
-                Color.argb(255, 0, 255, 255),
-                Color.argb(255, 128, 0, 255),
-                Color.argb(255, 255, 0, 128),
-                Color.argb(255, 255, 128, 0),
-                Color.argb(255, 128, 255, 0),
-                Color.argb(255, 0, 255, 128),
-                Color.argb(255, 0, 128, 255)
+            Color.argb(255, 0, 0, 255),
+            Color.argb(255, 255, 0, 255),
+            Color.argb(255, 255, 0, 0),
+            Color.argb(255, 255, 255, 0),
+            Color.argb(255, 0, 255, 0),
+            Color.argb(255, 0, 255, 255),
+            Color.argb(255, 128, 0, 255),
+            Color.argb(255, 255, 0, 128),
+            Color.argb(255, 255, 128, 0),
+            Color.argb(255, 128, 255, 0),
+            Color.argb(255, 0, 255, 128),
+            Color.argb(255, 0, 128, 255)
         )
     }
 }

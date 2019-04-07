@@ -25,11 +25,11 @@ import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ScrollLayout
-@JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : FrameLayout(context, attrs, defStyleAttr) {
-
+class ScrollLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
     private val touchSlopSquare: Float by lazy {
         val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
         (touchSlop * touchSlop).toFloat()
@@ -62,11 +62,15 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
-        // ACTION_DOWNはonInterceptTouchEventで処理済み
+            // ACTION_DOWNはonInterceptTouchEventで処理済み
             MotionEvent.ACTION_MOVE -> {
                 if (dragging) {
                     moveOffset(event.rawX - prevX, event.rawY - prevY)
-                } else if (hypotenuseSquare(event.rawX - startX, event.rawY - startY) > touchSlopSquare) {
+                } else if (hypotenuseSquare(
+                        event.rawX - startX,
+                        event.rawY - startY
+                    ) > touchSlopSquare
+                ) {
                     // 子ViewがonTouchEvent()でfalseを返した場合や、直接タッチされた場合は、
                     // dragging状態になる前にonTouchEventでの処理となるため判定は両方で必要
                     dragging = true

@@ -23,10 +23,11 @@ import android.view.View
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class GridMapView
-@JvmOverloads
-constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-        View(context, attrs, defStyleAttr) {
+class GridMapView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
     val gridMapContext = GridMapContext(context)
     private val paint = Paint().apply {
         color = Color.BLACK

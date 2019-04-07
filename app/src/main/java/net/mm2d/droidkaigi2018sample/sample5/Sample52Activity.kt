@@ -49,7 +49,10 @@ class Sample52Activity : AppCompatActivity() {
                 gridMap.invalidate()
             }
 
-            override fun onScale(@Dimension focusX: Float, @Dimension focusY: Float, scaleX: Float, scaleY: Float) {
+            override fun onScale(
+                @Dimension focusX: Float, @Dimension focusY: Float, scaleX: Float,
+                scaleY: Float
+            ) {
                 gridMap.gridMapContext.onScaleControl(focusX, focusY, scaleX, scaleY)
                 gridMap.invalidate()
             }

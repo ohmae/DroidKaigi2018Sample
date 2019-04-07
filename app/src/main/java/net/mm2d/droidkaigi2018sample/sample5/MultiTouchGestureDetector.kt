@@ -16,7 +16,10 @@ import android.view.MotionEvent
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class MultiTouchGestureDetector(context: Context, private val mListener: GestureListener) {
+class MultiTouchGestureDetector(
+    context: Context,
+    private val mListener: GestureListener
+) {
     /**
      * スケール操作を判定する最小span
      */
@@ -63,7 +66,10 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
          * @param scaleFactorX X軸方向のスケールの変化分
          * @param scaleFactorY Y軸方向のスケールの変化分
          */
-        fun onScale(@Dimension focusX: Float, @Dimension focusY: Float, scaleFactorX: Float, scaleFactorY: Float)
+        fun onScale(
+            @Dimension focusX: Float, @Dimension focusY: Float, scaleFactorX: Float,
+            scaleFactorY: Float
+        )
     }
 
     init {
@@ -105,7 +111,11 @@ class MultiTouchGestureDetector(context: Context, private val mListener: Gesture
      * @param notify Listener通知を行う場合true
      * @param excludeActionPointer イベントポインタを計算から除外する場合true
      */
-    private fun handleMotionEvent(event: MotionEvent, notify: Boolean, excludeActionPointer: Boolean = false) {
+    private fun handleMotionEvent(
+        event: MotionEvent,
+        notify: Boolean,
+        excludeActionPointer: Boolean = false
+    ) {
         val count = event.pointerCount
         val skipIndex = if (excludeActionPointer) event.actionIndex else -1
         val div = if (excludeActionPointer) count - 1 else count
