@@ -15,10 +15,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Style
-import android.support.annotation.Dimension
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.Dimension
 import net.mm2d.droidkaigi2018sample.R
 
 /**

@@ -8,8 +8,8 @@
 package net.mm2d.droidkaigi2018sample.sample5
 
 import android.content.Context
-import android.support.annotation.Dimension
 import android.view.MotionEvent
+import androidx.annotation.Dimension
 
 /**
  * マルチタッチによるピンチ操作を判定するクラス。

@@ -9,12 +9,12 @@ package net.mm2d.droidkaigi2018sample.sample4
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v4.math.MathUtils.clamp
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
+import androidx.core.math.MathUtils.clamp
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 
 /**

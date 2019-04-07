@@ -10,10 +10,10 @@ package net.mm2d.droidkaigi2018sample.sample2
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.support.v4.math.MathUtils.clamp
-import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.math.MathUtils.clamp
 import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.hypotenuse

@@ -12,15 +12,12 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import kotlinx.android.synthetic.main.activity_main.*
 import net.mm2d.droidkaigi2018sample.sample1.Sample1Activity
 import net.mm2d.droidkaigi2018sample.sample2.Sample2Activity
@@ -40,8 +37,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        recyclerView.addItemDecoration(
+            androidx.recyclerview.widget.DividerItemDecoration(
+                this,
+                androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+            )
+        )
         recyclerView.adapter = ListAdapter(
             this, Arrays.asList(
                 Link("sample1", Sample1Activity::class.java),
@@ -80,7 +82,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = links.size
 
-        internal inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal inner class ViewHolder(itemView: View) :
+            androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
             private val textView: TextView = itemView.findViewById(R.id.text)
 
             fun apply(link: Link) {

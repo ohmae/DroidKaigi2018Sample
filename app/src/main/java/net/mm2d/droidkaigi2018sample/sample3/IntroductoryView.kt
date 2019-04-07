@@ -17,8 +17,6 @@ import android.graphics.Bitmap.Config
 import android.graphics.Path.Direction
 import android.graphics.PorterDuff.Mode.CLEAR
 import android.graphics.PorterDuff.Mode.SRC
-import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -27,6 +25,8 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 

@@ -8,7 +8,7 @@
 package net.mm2d.droidkaigi2018sample.sample5
 
 import android.content.Context
-import android.support.v4.math.MathUtils.clamp
+import androidx.core.math.MathUtils.clamp
 
 /**
  * グリッド表示のコンテキスト。
