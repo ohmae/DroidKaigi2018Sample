@@ -8,9 +8,8 @@
 package net.mm2d.droidkaigi2018sample
 
 import android.app.Application
-
-import net.mm2d.log.AndroidLogInitializer
-import net.mm2d.log.Log
+import net.mm2d.log.Logger
+import net.mm2d.log.android.AndroidSenders
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -18,7 +17,9 @@ import net.mm2d.log.Log
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Log.setInitializer(AndroidLogInitializer.get())
-        Log.initialize(BuildConfig.DEBUG, true)
+        if (BuildConfig.DEBUG) {
+            Logger.setSender(AndroidSenders.create())
+            Logger.setLogLevel(Logger.VERBOSE)
+        }
     }
 }

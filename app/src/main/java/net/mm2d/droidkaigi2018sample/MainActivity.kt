@@ -28,7 +28,7 @@ import net.mm2d.droidkaigi2018sample.sample3.Sample3Activity
 import net.mm2d.droidkaigi2018sample.sample4.Sample4Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample51Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample52Activity
-import net.mm2d.log.Log
+import net.mm2d.log.Logger
 import java.util.*
 
 /**
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 context.startActivity(Intent(context, clazz))
             } catch (e: ActivityNotFoundException) {
-                Log.e(e)
+                Logger.e(e)
             }
         }
     }
