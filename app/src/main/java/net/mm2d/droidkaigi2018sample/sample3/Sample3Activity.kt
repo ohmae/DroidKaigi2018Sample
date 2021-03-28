@@ -11,10 +11,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import kotlinx.android.synthetic.main.activity_sample3.*
 import net.mm2d.droidkaigi2018sample.R
 
@@ -52,39 +52,12 @@ class Sample3Activity : AppCompatActivity() {
         val introductoryView = IntroductoryView(this)
         (window.decorView as ViewGroup).addView(introductoryView)
         // button1の部分に穴が開いたオーバーレイViewを表示する。
-        execAfterAllocateSize(button1) { introductoryView.startAnimation(button1) }
+        button1.doOnLayout {
+            introductoryView.startAnimation(button1)
+        }
     }
 
     private fun toast(text: CharSequence) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-    }
-
-    /**
-     * viewにサイズが割り当てられた後で実行する。
-     *
-     * @param view     監視対象のView
-     * @param function 実行する処理
-     */
-    private fun execAfterAllocateSize(view: View, function: () -> Unit) {
-        if (view.width == 0 || view.height == 0) {
-            execOnLayout(view, function)
-        } else {
-            function()
-        }
-    }
-
-    /**
-     * GlobalLayoutの後に一回のみ実行する。
-     *
-     * @param view     監視対象のView
-     * @param function 実行する処理
-     */
-    private fun execOnLayout(view: View, function: () -> Unit) {
-        view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                function()
-            }
-        })
     }
 }
