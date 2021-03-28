@@ -25,8 +25,6 @@ import net.mm2d.droidkaigi2018sample.R
  * タッチイベントを受け取り、その座標を描画するView。
  *
  * 履歴の情報を使わないと荒い単位でしか座標がとれないことが分かります。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample1View @JvmOverloads constructor(
     context: Context,
@@ -62,15 +60,18 @@ class Sample1View @JvmOverloads constructor(
     /*
      * 描画はバッファを書き出すのみ、バッファサイズとキャンバスのサイズが異なっていれば再構築する
      */
+    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-        if (buffer == null || buffer!!.width != canvas.width || buffer!!.height != canvas.height) {
-            buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
-                bufferCanvas = Canvas(it).apply {
-                    drawColor(Color.WHITE)
-                }
-            }
+        val buffer = buffer.let {
+            if (it == null || it.width != width || it.height != height) {
+                Bitmap.createBitmap(width, height, Config.ARGB_8888).also {
+                    bufferCanvas = Canvas(it).apply {
+                        drawColor(Color.WHITE)
+                    }
+                }.also { bitmap -> this.buffer = bitmap }
+            } else it
         }
-        canvas.drawBitmap(buffer!!, 0f, 0f, paint)
+        canvas.drawBitmap(buffer, 0f, 0f, paint)
     }
 
     override fun onDetachedFromWindow() {
@@ -99,7 +100,7 @@ class Sample1View @JvmOverloads constructor(
      * @param event MotionEvent
      */
     private fun drawTouch(canvas: Canvas, event: MotionEvent) {
-        for (i in 0 until event.pointerCount) {
+        repeat(event.pointerCount) { i ->
             // IDに紐付いて色を分ける
             val id = event.getPointerId(i)
             paint.color = COLORS[id % COLORS.size]
@@ -115,14 +116,14 @@ class Sample1View @JvmOverloads constructor(
      */
     private fun drawTouchWithHistory(canvas: Canvas, event: MotionEvent) {
         val historySize = event.historySize
-        for (i in 0 until event.pointerCount) {
+        repeat(event.pointerCount) { i ->
             val id = event.getPointerId(i)
             paint.color = COLORS[id % COLORS.size]
             if (historySize == 0) {
                 // 履歴がない場合はカレントを描画
                 canvas.drawCircle(event.getX(i), event.getY(i), radius, paint)
             } else {
-                for (h in 0 until historySize) {
+                repeat(historySize) { h ->
                     // historyは数字が小さい方が古い情報
                     canvas.drawCircle(
                         event.getHistoricalX(i, h),

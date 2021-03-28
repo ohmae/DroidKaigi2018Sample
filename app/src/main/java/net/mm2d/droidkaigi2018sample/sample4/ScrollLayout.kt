@@ -22,8 +22,6 @@ import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
  *
  * 子Viewはクリックを受け付ける可能性もあれば、何もしない可能性もあり、
  * また子ViewではなくこのViewが直接タッチされる可能性がある状況で適切にイベントを伝搬させるようにする。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class ScrollLayout @JvmOverloads constructor(
     context: Context,
@@ -89,7 +87,7 @@ class ScrollLayout @JvmOverloads constructor(
      * @param dy Y軸方向の移動
      */
     private fun moveOffset(dx: Float, dy: Float) {
-        for (i in 0 until childCount) {
+        repeat(childCount) { i ->
             moveOffset(getChildAt(i), dx, dy)
         }
     }

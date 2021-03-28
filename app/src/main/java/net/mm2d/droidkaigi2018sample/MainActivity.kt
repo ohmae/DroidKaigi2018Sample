@@ -25,13 +25,10 @@ import net.mm2d.droidkaigi2018sample.sample3.Sample3Activity
 import net.mm2d.droidkaigi2018sample.sample4.Sample4Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample51Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample52Activity
-import net.mm2d.log.Logger
 import java.util.*
 
 /**
  * ここから各画面を起動する。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
         recyclerView.adapter = ListAdapter(
-            this, Arrays.asList(
+            this, listOf(
                 Link("sample1", Sample1Activity::class.java),
                 Link("sample2", Sample2Activity::class.java),
                 Link("sample3", Sample3Activity::class.java),
@@ -56,19 +53,16 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private inner class Link
-    internal constructor(internal val title: String, private val clazz: Class<out Activity>) {
-        internal fun startActivity(context: Context) {
+    private inner class Link(val title: String, private val clazz: Class<out Activity>) {
+        fun startActivity(context: Context) {
             try {
                 context.startActivity(Intent(context, clazz))
             } catch (e: ActivityNotFoundException) {
-                Logger.e(e)
             }
         }
     }
 
-    private class ListAdapter
-    internal constructor(private val context: Context, list: List<Link>) :
+    private class ListAdapter(private val context: Context, list: List<Link>) :
         Adapter<ListAdapter.ViewHolder>() {
         private val inflater = LayoutInflater.from(context)
         private val links: List<Link> = ArrayList(list)
@@ -82,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = links.size
 
-        internal inner class ViewHolder(itemView: View) :
+        inner class ViewHolder(itemView: View) :
             androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
             private val textView: TextView = itemView.findViewById(R.id.text)
 

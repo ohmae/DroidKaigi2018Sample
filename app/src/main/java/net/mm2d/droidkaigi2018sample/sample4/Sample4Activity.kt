@@ -18,8 +18,6 @@ import net.mm2d.droidkaigi2018sample.R
  * Sample2に似ているが、ドラッグによる移動をViewGroupで制御し、子Viewではタップの判定を行うサンプル。
  *
  * [ScrollLayout]をご覧ください。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample4Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

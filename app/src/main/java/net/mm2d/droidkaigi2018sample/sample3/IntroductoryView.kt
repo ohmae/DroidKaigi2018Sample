@@ -29,14 +29,13 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
+import kotlin.math.sqrt
 
 /**
  * 新機能アピール用のView
  *
  * 指定Viewが穴の中心になるように円形のViewを表示する。
  * アニメーションのところはどうでもいいので、タッチに対する対応のみ解説。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class IntroductoryView @JvmOverloads constructor(
     context: Context,
@@ -108,7 +107,7 @@ class IntroductoryView @JvmOverloads constructor(
      * @param canvas バッファへのCanvas
      */
     private fun drawBuffer(canvas: Canvas) {
-        canvas.drawColor(dimmerColor, PorterDuff.Mode.SRC)
+        canvas.drawColor(dimmerColor, SRC)
         if (circleRadius == 0f) {
             return
         }
@@ -130,7 +129,7 @@ class IntroductoryView @JvmOverloads constructor(
         centerX = rect.centerX().toFloat()
         centerY = rect.centerY().toFloat()
         holeRadiusSquare = hypotenuseSquare(rect.width().toFloat(), rect.height().toFloat()) / 4f
-        val targetHoleRadius = Math.sqrt(holeRadiusSquare.toDouble()).toFloat()
+        val targetHoleRadius = sqrt(holeRadiusSquare.toDouble()).toFloat()
         setPadding(paddingLeft, (centerY + targetHoleRadius).toInt(), paddingRight, paddingBottom)
         // Dimmer効果の後、円と穴のアニメーションを開始する
         animator = AnimatorSet().apply {

@@ -10,11 +10,11 @@ package net.mm2d.droidkaigi2018sample.sample5
 import android.content.Context
 import android.view.MotionEvent
 import androidx.annotation.Dimension
+import kotlin.math.abs
+import kotlin.math.roundToLong
 
 /**
  * マルチタッチによるピンチ操作を判定するクラス。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class MultiTouchGestureDetector(
     context: Context,
@@ -74,12 +74,11 @@ class MultiTouchGestureDetector(
 
     init {
         val density = context.resources.displayMetrics.density
-        minimumSpan = Math.round(MINIMUM_SPAN * density).toFloat()
+        minimumSpan = (MINIMUM_SPAN * density).roundToLong().toFloat()
     }
 
     fun onTouchEvent(event: MotionEvent) {
-        val action = event.actionMasked
-        when (action) {
+        when (event.actionMasked) {
             MotionEvent.ACTION_DOWN ->
                 // 通知なしで現在値の計算を行う
                 handleMotionEvent(event, false)
@@ -90,7 +89,7 @@ class MultiTouchGestureDetector(
             MotionEvent.ACTION_POINTER_DOWN -> {
                 // ポインタが増えたイベント
                 // 今回増えたポインタ以外で一度差分計算、通知を行う
-                handleMotionEvent(event, true, true)
+                handleMotionEvent(event, notify = true, excludeActionPointer = true)
                 // 次回のイベント発生時に差分を計算するため、イベントポインタを含めて現在値の計算を行う
                 handleMotionEvent(event, false, false)
             }
@@ -136,8 +135,8 @@ class MultiTouchGestureDetector(
         var devSumY = 0f
         for (i in 0 until count) {
             if (i == skipIndex) continue
-            devSumX += Math.abs(focusX - event.getX(i)) / div
-            devSumY += Math.abs(focusY - event.getY(i)) / div
+            devSumX += abs(focusX - event.getX(i)) / div
+            devSumY += abs(focusY - event.getY(i)) / div
         }
         val spanX = devSumX / div * 2
         val spanY = devSumY / div * 2

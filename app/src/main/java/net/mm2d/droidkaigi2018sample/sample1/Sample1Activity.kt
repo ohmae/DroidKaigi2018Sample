@@ -20,8 +20,6 @@ import net.mm2d.droidkaigi2018sample.R
  * historyを表示するか否かのSwitchと、
  * 表示のクリアを行うボタンをtoolbarに配置します。
  * 処理は[Sample1View]にて実装。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample1Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

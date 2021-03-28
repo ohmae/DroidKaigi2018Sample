@@ -20,8 +20,6 @@ import android.view.View
  * [GridMapContext]の情報を元に描画を行う。
  * 描画そのものは工夫も特になく、
  * パラメータに従って矩形を描画しているだけ。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class GridMapView @JvmOverloads constructor(
     context: Context,

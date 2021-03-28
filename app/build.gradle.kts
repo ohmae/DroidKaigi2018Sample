@@ -56,8 +56,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation("com.google.android.material:material:1.3.0")
-    implementation("net.mm2d.log:log:0.9.4")
-    implementation("net.mm2d.log:log-android:0.9.4")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     testImplementation("junit:junit:4.13.2")
 }

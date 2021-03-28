@@ -22,8 +22,6 @@ import net.mm2d.droidkaigi2018sample.R
  * オーバーレイ表示するViewにもうけた穴のタッチイベントを下のViewに伝えるサンプル。
  *
  * オーバーレイ表示しているViewのonTouchEventの戻り値で制御します。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample3Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +52,7 @@ class Sample3Activity : AppCompatActivity() {
         val introductoryView = IntroductoryView(this)
         (window.decorView as ViewGroup).addView(introductoryView)
         // button1の部分に穴が開いたオーバーレイViewを表示する。
-        execAfterAllocateSize(button1, { introductoryView.startAnimation(button1) })
+        execAfterAllocateSize(button1) { introductoryView.startAnimation(button1) }
     }
 
     private fun toast(text: CharSequence) {
@@ -70,9 +68,9 @@ class Sample3Activity : AppCompatActivity() {
     private fun execAfterAllocateSize(view: View, function: () -> Unit) {
         if (view.width == 0 || view.height == 0) {
             execOnLayout(view, function)
-            return
+        } else {
+            function()
         }
-        function()
     }
 
     /**

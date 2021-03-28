@@ -16,8 +16,6 @@ import androidx.core.math.MathUtils.clamp
  * 1グリッドを1としたマップがあり、
  * その上の表示領域を示す窓の位置と拡大率を保持することで表現する。
  * 1グリッドが1であるため、拡大率は実際に表示されるグリッドの長さ(pixel)に対応する。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class GridMapContext internal constructor(context: Context) {
     /**
@@ -136,10 +134,10 @@ class GridMapContext internal constructor(context: Context) {
         /**
          * X軸方向のグリッド数
          */
-        private val GRID_X = 400
+        private const val GRID_X = 400
         /**
          * Y軸方向のグリッド数
          */
-        private val GRID_Y = 400
+        private const val GRID_Y = 400
     }
 }

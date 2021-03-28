@@ -20,8 +20,6 @@ import net.mm2d.droidkaigi2018sample.sample5.MultiTouchGestureDetector.GestureLi
  * ピンチ操作できるグリッドのサンプル。
  *
  * [MultiTouchGestureDetector]を利用するバターン
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample52Activity : AppCompatActivity() {
 
@@ -50,10 +48,12 @@ class Sample52Activity : AppCompatActivity() {
             }
 
             override fun onScale(
-                @Dimension focusX: Float, @Dimension focusY: Float, scaleX: Float,
-                scaleY: Float
+                @Dimension focusX: Float,
+                @Dimension focusY: Float,
+                scaleFactorX: Float,
+                scaleFactorY: Float
             ) {
-                gridMap.gridMapContext.onScaleControl(focusX, focusY, scaleX, scaleY)
+                gridMap.gridMapContext.onScaleControl(focusX, focusY, scaleFactorX, scaleFactorY)
                 gridMap.invalidate()
             }
         })

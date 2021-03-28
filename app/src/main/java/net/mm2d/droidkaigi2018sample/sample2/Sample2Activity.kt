@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_sample2.*
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.hypotenuse
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
+import kotlin.math.ln
 
 /**
  * タッチイベントを受け取りViewの移動を行うサンプル。
@@ -27,8 +28,6 @@ import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
  * OnTouchListenerが設定されている場合、OnTouchListenerが先にコールされます。
  * OnTouchListenerが設定されていない場合、もしくはOnTouchListener#onTouchがfalseを返した場合に、
  * onTouchEventがコールされます。
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class Sample2Activity : AppCompatActivity() {
     private val touchSlopSquare by lazy {
@@ -151,13 +150,13 @@ class Sample2Activity : AppCompatActivity() {
         }
         // 移動速度が1を下回るまでの時間を計算する
         val assumedDuration =
-            (Math.log((1.0 / velocity)) / Math.log(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
+            (ln((1.0 / velocity)) / ln(DECELERATION_RATE.toDouble()) * FRAME_INTERVAL).toLong()
         if (assumedDuration <= 0) {
             return
         }
         animator = ValueAnimator.ofFloat(0f, 1f).apply {
             duration = assumedDuration
-            addUpdateListener { _ -> inertialMove(view) }
+            addUpdateListener { inertialMove(view) }
             start()
         }
     }
@@ -200,8 +199,8 @@ class Sample2Activity : AppCompatActivity() {
 
     companion object {
         // 慣性移動の減衰率
-        private val DECELERATION_RATE = 0.95f
+        private const val DECELERATION_RATE = 0.95f
         // 1フレームの時間、16msとしておく
-        private val FRAME_INTERVAL = 16
+        private const val FRAME_INTERVAL = 16
     }
 }

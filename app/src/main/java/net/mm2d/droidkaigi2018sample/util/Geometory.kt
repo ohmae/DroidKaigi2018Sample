@@ -1,9 +1,9 @@
 package net.mm2d.droidkaigi2018sample.util
 
+import kotlin.math.hypot
+
 /**
  * 距離計算メソッド
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 
 /**
@@ -17,5 +17,5 @@ fun hypotenuseSquare(x: Float, y: Float): Float {
  * sqrt(x^2 + y^2)を計算する。
  */
 fun hypotenuse(x: Float, y: Float): Float {
-    return Math.hypot(x.toDouble(), y.toDouble()).toFloat()
+    return hypot(x.toDouble(), y.toDouble()).toFloat()
 }
