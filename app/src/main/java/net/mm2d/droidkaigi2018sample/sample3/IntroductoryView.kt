@@ -92,7 +92,7 @@ class IntroductoryView @JvmOverloads constructor(
     }
 
     override fun dispatchDraw(canvas: Canvas) {
-        if (buffer == null || buffer.run { width != canvas.width || height != canvas.height }) {
+        if (buffer?.let { it.width == canvas.width && it.height == canvas.height } != true) {
             buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
                 bufferCanvas = Canvas(it)
             }
