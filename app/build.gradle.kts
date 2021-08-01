@@ -14,12 +14,12 @@ val versionMinor = 0
 val versionPatch = 1
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     defaultConfig {
         applicationId = "net.mm2d.droidkaigi2018sample"
-        minSdkVersion(16)
-        targetSdkVersion(30)
+        minSdk = 16
+        targetSdk = 30
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         base.archivesBaseName = "${applicationName}-${versionName}"
@@ -37,30 +37,34 @@ android {
             isDebuggable = true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
-            manifestPlaceholders(mapOf("app_name" to "D:DroidKaigi2018Sample"))
+            addManifestPlaceholders(mapOf("app_name" to "D:DroidKaigi2018Sample"))
         }
         getByName("release") {
             isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            manifestPlaceholders(mapOf("app_name" to "@string/app_name"))
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            addManifestPlaceholders(mapOf("app_name" to "@string/app_name"))
         }
     }
     applicationVariants.all {
         if (buildType.name == "release") {
             outputs.all {
-                (this as BaseVariantOutputImpl).outputFileName = "${applicationName}-${versionName}.apk"
+                (this as BaseVariantOutputImpl).outputFileName =
+                    "${applicationName}-${versionName}.apk"
             }
         }
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.recyclerview:recyclerview:1.2.0")
-    implementation("com.google.android.material:material:1.3.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     testImplementation("junit:junit:4.13.2")
 }
 
