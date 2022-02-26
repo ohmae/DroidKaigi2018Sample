@@ -64,8 +64,8 @@ class Sample1View @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         val buffer = buffer.let {
             if (it == null || it.width != width || it.height != height) {
-                Bitmap.createBitmap(width, height, Config.ARGB_8888).also {
-                    bufferCanvas = Canvas(it).apply {
+                Bitmap.createBitmap(width, height, Config.ARGB_8888).also { bitmap ->
+                    bufferCanvas = Canvas(bitmap).apply {
                         drawColor(Color.WHITE)
                     }
                 }.also { bitmap -> this.buffer = bitmap }

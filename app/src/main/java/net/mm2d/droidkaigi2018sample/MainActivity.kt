@@ -26,6 +26,8 @@ import net.mm2d.droidkaigi2018sample.sample3.Sample3Activity
 import net.mm2d.droidkaigi2018sample.sample4.Sample4Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample51Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample52Activity
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * ここから各画面を起動する。
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
             fun apply(link: Link) {
                 itemView.setOnClickListener { link.startActivity(context) }
-                textView.text = link.title.toUpperCase()
+                textView.text = link.title.uppercase(Locale.getDefault())
             }
         }
     }

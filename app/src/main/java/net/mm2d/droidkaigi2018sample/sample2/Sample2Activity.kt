@@ -16,8 +16,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.math.MathUtils.clamp
 import net.mm2d.droidkaigi2018sample.databinding.ActivitySample2Binding
-import net.mm2d.droidkaigi2018sample.util.hypotenuse
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
+import kotlin.math.hypot
 import kotlin.math.ln
 
 /**
@@ -147,7 +147,7 @@ class Sample2Activity : AppCompatActivity() {
             velocityY = yVelocity
         }
         // 速度の絶対値を求める
-        val velocity = hypotenuse(velocityX, velocityY)
+        val velocity = hypot(velocityX, velocityY)
         if (velocity < 1f) {
             return
         }

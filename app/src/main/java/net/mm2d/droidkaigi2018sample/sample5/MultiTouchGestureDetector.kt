@@ -95,7 +95,7 @@ class MultiTouchGestureDetector(
                 // 今回増えたポインタ以外で一度差分計算、通知を行う
                 handleMotionEvent(event, notify = true, excludeActionPointer = true)
                 // 次回のイベント発生時に差分を計算するため、イベントポインタを含めて現在値の計算を行う
-                handleMotionEvent(event, false, false)
+                handleMotionEvent(event, notify = false, excludeActionPointer = false)
             }
             MotionEvent.ACTION_POINTER_UP -> {
                 // ポインタが減るイベント
