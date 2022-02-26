@@ -12,8 +12,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.Dimension
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_sample5.*
-import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.databinding.ActivitySample5Binding
 import net.mm2d.droidkaigi2018sample.sample5.MultiTouchGestureDetector.GestureListener
 
 /**
@@ -22,11 +21,13 @@ import net.mm2d.droidkaigi2018sample.sample5.MultiTouchGestureDetector.GestureLi
  * [MultiTouchGestureDetector]を利用するバターン
  */
 class Sample52Activity : AppCompatActivity() {
+    private lateinit var binding: ActivitySample5Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sample5)
-        setSupportActionBar(toolbar)
+        binding = ActivitySample5Binding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setUpGridMap()
     }
@@ -43,8 +44,8 @@ class Sample52Activity : AppCompatActivity() {
     private fun setUpGridMap() {
         val detector = MultiTouchGestureDetector(this, object : GestureListener {
             override fun onMove(@Dimension deltaX: Float, @Dimension deltaY: Float) {
-                gridMap.gridMapContext.onMoveControl(deltaX, deltaY)
-                gridMap.invalidate()
+                binding.gridMap.gridMapContext.onMoveControl(deltaX, deltaY)
+                binding.gridMap.invalidate()
             }
 
             override fun onScale(
@@ -53,11 +54,12 @@ class Sample52Activity : AppCompatActivity() {
                 scaleFactorX: Float,
                 scaleFactorY: Float
             ) {
-                gridMap.gridMapContext.onScaleControl(focusX, focusY, scaleFactorX, scaleFactorY)
-                gridMap.invalidate()
+                binding.gridMap.gridMapContext
+                    .onScaleControl(focusX, focusY, scaleFactorX, scaleFactorY)
+                binding.gridMap.invalidate()
             }
         })
-        gridMap.setOnTouchListener { _, event ->
+        binding.gridMap.setOnTouchListener { _, event ->
             detector.onTouchEvent(event)
             true
         }

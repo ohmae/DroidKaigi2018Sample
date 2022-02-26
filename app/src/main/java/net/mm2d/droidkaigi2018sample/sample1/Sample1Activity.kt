@@ -11,8 +11,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_sample1.*
 import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.databinding.ActivitySample1Binding
 
 /**
  * タッチイベントを受け取りそのポインタを表示するサンプル。
@@ -22,14 +22,17 @@ import net.mm2d.droidkaigi2018sample.R
  * 処理は[Sample1View]にて実装。
  */
 class Sample1Activity : AppCompatActivity() {
+    private lateinit var binding: ActivitySample1Binding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sample1)
-        setSupportActionBar(toolbar)
+        binding = ActivitySample1Binding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // スイッチのon/offでhistory表示の切り替えを行う
-        historySwitch.setOnCheckedChangeListener { _, isChecked ->
-            sample1View.setUseHistory(isChecked)
+        binding.historySwitch.setOnCheckedChangeListener { _, isChecked ->
+            binding.sample1View.setUseHistory(isChecked)
         }
     }
 
@@ -41,7 +44,7 @@ class Sample1Activity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
-            R.id.action_clear -> sample1View.clear()
+            R.id.action_clear -> binding.sample1View.clear()
             else -> return false
         }
         return true

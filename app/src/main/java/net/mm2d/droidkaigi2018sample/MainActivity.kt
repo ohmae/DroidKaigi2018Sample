@@ -17,15 +17,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import kotlinx.android.synthetic.main.activity_main.*
+import net.mm2d.droidkaigi2018sample.databinding.ActivityMainBinding
 import net.mm2d.droidkaigi2018sample.sample1.Sample1Activity
 import net.mm2d.droidkaigi2018sample.sample2.Sample2Activity
 import net.mm2d.droidkaigi2018sample.sample3.Sample3Activity
 import net.mm2d.droidkaigi2018sample.sample4.Sample4Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample51Activity
 import net.mm2d.droidkaigi2018sample.sample5.Sample52Activity
-import java.util.*
 
 /**
  * ここから各画面を起動する。
@@ -33,15 +33,16 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-        recyclerView.addItemDecoration(
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(
             androidx.recyclerview.widget.DividerItemDecoration(
                 this,
                 androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
             )
         )
-        recyclerView.adapter = ListAdapter(
+        binding.recyclerView.adapter = ListAdapter(
             this, listOf(
                 Link("sample1", Sample1Activity::class.java),
                 Link("sample2", Sample2Activity::class.java),

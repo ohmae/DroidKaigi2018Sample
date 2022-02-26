@@ -15,8 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
-import kotlinx.android.synthetic.main.activity_sample3.*
-import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.databinding.ActivitySample3Binding
 
 /**
  * オーバーレイ表示するViewにもうけた穴のタッチイベントを下のViewに伝えるサンプル。
@@ -24,19 +23,21 @@ import net.mm2d.droidkaigi2018sample.R
  * オーバーレイ表示しているViewのonTouchEventの戻り値で制御します。
  */
 class Sample3Activity : AppCompatActivity() {
+    private lateinit var binding: ActivitySample3Binding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sample3)
-        setSupportActionBar(toolbar)
+        binding = ActivitySample3Binding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // それぞれのボタンがタップされたらToastを表示する
         val listener = { v: View -> toast((v as TextView).text) }
-        button1.setOnClickListener(listener)
-        button2.setOnClickListener(listener)
-        button3.setOnClickListener(listener)
-        button4.setOnClickListener(listener)
-        button5.setOnClickListener(listener)
-        button6.setOnClickListener(listener)
+        binding.button1.setOnClickListener(listener)
+        binding.button2.setOnClickListener(listener)
+        binding.button3.setOnClickListener(listener)
+        binding.button4.setOnClickListener(listener)
+        binding.button5.setOnClickListener(listener)
+        binding.button6.setOnClickListener(listener)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -52,8 +53,8 @@ class Sample3Activity : AppCompatActivity() {
         val introductoryView = IntroductoryView(this)
         (window.decorView as ViewGroup).addView(introductoryView)
         // button1の部分に穴が開いたオーバーレイViewを表示する。
-        button1.doOnLayout {
-            introductoryView.startAnimation(button1)
+        binding.button1.doOnLayout {
+            introductoryView.startAnimation(binding.button1)
         }
     }
 

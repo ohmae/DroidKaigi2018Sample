@@ -22,14 +22,17 @@ class GridMapContext internal constructor(context: Context) {
      * X軸方向の拡大率最小値
      */
     private val scaleXMin: Float
+
     /**
      * Y軸方向の拡大率最小値
      */
     private val scaleYMin: Float
+
     /**
      * X軸方向の拡大率最大値
      */
     private val scaleXMax: Float
+
     /**
      * Y軸方向の拡大率最大値
      */
@@ -40,25 +43,30 @@ class GridMapContext internal constructor(context: Context) {
      */
     internal var x = 40f
         private set
+
     /**
      * Y座標
      */
     internal var y = 40f
         private set
+
     /**
      * X軸方向の拡大率
      */
     internal var scaleX = 100f
         private set
+
     /**
      * Y軸方向の拡大率
      */
     internal var scaleY = 100f
         private set
+
     /**
      * Viewの幅
      */
     private var viewWidth = 0
+
     /**
      * Viewの高さ
      */
@@ -135,6 +143,7 @@ class GridMapContext internal constructor(context: Context) {
          * X軸方向のグリッド数
          */
         private const val GRID_X = 400
+
         /**
          * Y軸方向のグリッド数
          */

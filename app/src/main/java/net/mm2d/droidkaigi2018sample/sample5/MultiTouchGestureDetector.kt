@@ -25,21 +25,25 @@ class MultiTouchGestureDetector(
      */
     @Dimension
     private val minimumSpan: Float
+
     /**
      * 直前の操作の中心のX座標
      */
     @Dimension
     private var prevFocusX = 0f
+
     /**
      * 直前の操作の中心のY座標
      */
     @Dimension
     private var prevFocusY = 0f
+
     /**
      * 直前のX方向のspan
      */
     @Dimension
     private var prevSpanX = 0f
+
     /**
      * 直前のY方向のspan
      */

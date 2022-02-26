@@ -16,8 +16,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_sample5.*
-import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.databinding.ActivitySample5Binding
 
 /**
  * ピンチ操作できるグリッドのサンプル。
@@ -25,11 +24,13 @@ import net.mm2d.droidkaigi2018sample.R
  * [GestureDetector]と[ScaleGestureDetector]を利用するバターン
  */
 class Sample51Activity : AppCompatActivity() {
+    private lateinit var binding: ActivitySample5Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sample5)
-        setSupportActionBar(toolbar)
+        binding = ActivitySample5Binding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setUpGridMap()
     }
@@ -48,13 +49,13 @@ class Sample51Activity : AppCompatActivity() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val scaleFactorX = detector.currentSpanX / detector.previousSpanX
                 val scaleFactorY = detector.currentSpanY / detector.previousSpanY
-                gridMap.gridMapContext.onScaleControl(
+                binding.gridMap.gridMapContext.onScaleControl(
                     detector.focusX,
                     detector.focusY,
                     scaleFactorX,
                     scaleFactorY
                 )
-                gridMap.invalidate()
+                binding.gridMap.invalidate()
                 return true
             }
         })
@@ -65,13 +66,13 @@ class Sample51Activity : AppCompatActivity() {
                 distanceX: Float,
                 distanceY: Float
             ): Boolean {
-                gridMap.gridMapContext.onMoveControl(-distanceX, -distanceY)
-                gridMap.invalidate()
+                binding.gridMap.gridMapContext.onMoveControl(-distanceX, -distanceY)
+                binding.gridMap.invalidate()
                 return true
             }
         })
         // 2つのdetectorにeventを渡す
-        gridMap.setOnTouchListener { _, event ->
+        binding.gridMap.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
             scaleDetector.onTouchEvent(event)
             true

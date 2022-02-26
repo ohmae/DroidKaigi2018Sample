@@ -4,7 +4,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
+    id("kotlin-kapt")
     id("com.github.ben-manes.versions")
 }
 
@@ -22,7 +22,7 @@ android {
         targetSdk = 31
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        base.archivesBaseName = "${applicationName}-${versionName}"
+        base.archivesName.set("${applicationName}-${versionName}")
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
@@ -48,6 +48,9 @@ android {
             )
             addManifestPlaceholders(mapOf("app_name" to "@string/app_name"))
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
     applicationVariants.all {
         if (buildType.name == "release") {

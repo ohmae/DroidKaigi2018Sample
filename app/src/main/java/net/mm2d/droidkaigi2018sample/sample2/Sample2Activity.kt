@@ -9,13 +9,13 @@ package net.mm2d.droidkaigi2018sample.sample2
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.math.MathUtils.clamp
-import kotlinx.android.synthetic.main.activity_sample2.*
-import net.mm2d.droidkaigi2018sample.R
+import net.mm2d.droidkaigi2018sample.databinding.ActivitySample2Binding
 import net.mm2d.droidkaigi2018sample.util.hypotenuse
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 import kotlin.math.ln
@@ -30,6 +30,7 @@ import kotlin.math.ln
  * onTouchEventがコールされます。
  */
 class Sample2Activity : AppCompatActivity() {
+    private lateinit var binding: ActivitySample2Binding
     private val touchSlopSquare by lazy {
         val touchSlop = ViewConfiguration.get(this).scaledTouchSlop
         touchSlop * touchSlop
@@ -44,11 +45,13 @@ class Sample2Activity : AppCompatActivity() {
     private var velocityTracker: VelocityTracker? = null
     private var animator: Animator? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sample2)
+        binding = ActivitySample2Binding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        icon.setOnTouchListener(::onTouch)
+        binding.icon.setOnTouchListener(::onTouch)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -200,6 +203,7 @@ class Sample2Activity : AppCompatActivity() {
     companion object {
         // 慣性移動の減衰率
         private const val DECELERATION_RATE = 0.95f
+
         // 1フレームの時間、16msとしておく
         private const val FRAME_INTERVAL = 16
     }
