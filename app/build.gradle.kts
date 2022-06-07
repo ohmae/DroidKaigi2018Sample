@@ -25,21 +25,23 @@ android {
         base.archivesName.set("${applicationName}-${versionName}")
         vectorDrawables.useSupportLibrary = true
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    applicationVariants.all {
+        if (buildType.name == "release") {
+            outputs.all {
+                (this as BaseVariantOutputImpl).outputFileName =
+                    "${applicationName}-${versionName}.apk"
+            }
+        }
     }
     buildTypes {
-        getByName("debug") {
+        debug {
             isDebuggable = true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
             addManifestPlaceholders(mapOf("app_name" to "D:DroidKaigi2018Sample"))
+            isTestCoverageEnabled = true
         }
-        getByName("release") {
+        release {
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
@@ -49,25 +51,30 @@ android {
             addManifestPlaceholders(mapOf("app_name" to "@string/app_name"))
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         viewBinding = true
     }
-    applicationVariants.all {
-        if (buildType.name == "release") {
-            outputs.all {
-                (this as BaseVariantOutputImpl).outputFileName =
-                    "${applicationName}-${versionName}.apk"
-            }
-        }
+    lint {
+        abortOnError = true
+    }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.5.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("com.google.android.material:material:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
 }
 
