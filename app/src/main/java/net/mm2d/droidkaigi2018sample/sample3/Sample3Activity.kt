@@ -13,8 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updatePadding
 import net.mm2d.droidkaigi2018sample.databinding.ActivitySample3Binding
 
 /**
@@ -26,6 +30,7 @@ class Sample3Activity : AppCompatActivity() {
     private lateinit var binding: ActivitySample3Binding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySample3Binding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -38,6 +43,15 @@ class Sample3Activity : AppCompatActivity() {
         binding.button4.setOnClickListener(listener)
         binding.button5.setOnClickListener(listener)
         binding.button6.setOnClickListener(listener)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                bottom = systemBars.bottom,
+                left = systemBars.left,
+                right = systemBars.right,
+            )
+            insets
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

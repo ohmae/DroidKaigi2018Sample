@@ -13,8 +13,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.math.MathUtils.clamp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import net.mm2d.droidkaigi2018sample.databinding.ActivitySample2Binding
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 import kotlin.math.hypot
@@ -48,10 +52,21 @@ class Sample2Activity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySample2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.icon.setOnTouchListener(::onTouch)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                bottom = systemBars.bottom,
+                left = systemBars.left,
+                right = systemBars.right,
+            )
+            insets
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -10,7 +10,11 @@ package net.mm2d.droidkaigi2018sample.sample1
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.databinding.ActivitySample1Binding
 
@@ -26,6 +30,7 @@ class Sample1Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySample1Binding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -33,6 +38,15 @@ class Sample1Activity : AppCompatActivity() {
         // スイッチのon/offでhistory表示の切り替えを行う
         binding.historySwitch.setOnCheckedChangeListener { _, isChecked ->
             binding.sample1View.setUseHistory(isChecked)
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                bottom = systemBars.bottom,
+                left = systemBars.left,
+                right = systemBars.right,
+            )
+            insets
         }
     }
 

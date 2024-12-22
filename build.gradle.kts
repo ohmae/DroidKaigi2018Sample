@@ -4,9 +4,9 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.2.1")
-        classpath(kotlin("gradle-plugin", version = "1.6.21"))
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.42.0")
+        classpath("com.android.tools.build:gradle:8.7.3")
+        classpath(kotlin("gradle-plugin", version = "2.1.0"))
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.51.0")
     }
 }
 
@@ -15,8 +15,4 @@ allprojects {
         google()
         mavenCentral()
     }
-}
-
-tasks.create("clean", Delete::class) {
-    delete(rootProject.buildDir)
 }

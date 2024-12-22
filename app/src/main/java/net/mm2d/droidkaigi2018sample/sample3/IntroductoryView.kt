@@ -78,11 +78,13 @@ class IntroductoryView @JvmOverloads constructor(
             // アニメーション中は下のViewに伝搬させない
             return true
         }
-        if (event.action == MotionEvent.ACTION_UP
-            || event.action == MotionEvent.ACTION_CANCEL
+        if (event.action == MotionEvent.ACTION_UP ||
+            event.action == MotionEvent.ACTION_CANCEL
         ) {
             // タッチの終了で非表示にする
-            (parent as? ViewGroup)?.removeView(this)
+            post {
+                (parent as? ViewGroup)?.removeView(this)
+            }
         }
         // 穴の範囲内の場合のみ下のViewへタッチイベントを伝搬させ
         // 「穴の中のみタッチに反応する」を実現する
@@ -116,7 +118,7 @@ class IntroductoryView @JvmOverloads constructor(
         path.reset()
         path.addCircle(centerX, centerY, circleRadius, Direction.CW)
         canvas.clipPath(path)
-        super.dispatchDraw(this.bufferCanvas)
+        super.dispatchDraw(this.bufferCanvas!!)
         canvas.restore()
         if (holeRadius > 0f) {
             canvas.drawCircle(centerX, centerY, holeRadius, holePaint)

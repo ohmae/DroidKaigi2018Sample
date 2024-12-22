@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import java.util.Locale
 
 plugins {
     id("com.android.application")
@@ -14,12 +15,13 @@ val versionMinor = 0
 val versionPatch = 1
 
 android {
-    compileSdk = 31
+    compileSdk = 35
 
+    namespace = "net.mm2d.droidkaigi2018sample"
     defaultConfig {
         applicationId = "net.mm2d.droidkaigi2018sample"
-        minSdk = 16
-        targetSdk = 31
+        minSdk = 21
+        targetSdk = 35
         versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
         base.archivesName.set("${applicationName}-${versionName}")
@@ -39,7 +41,7 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "d"
             addManifestPlaceholders(mapOf("app_name" to "D:DroidKaigi2018Sample"))
-            isTestCoverageEnabled = true
+            enableUnitTestCoverage = true
         }
         release {
             isShrinkResources = true
@@ -70,16 +72,17 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.appcompat:appcompat:1.4.2")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     testImplementation("junit:junit:4.13.2")
 }
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA")
+        .any { version.uppercase(Locale.getDefault()).contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()

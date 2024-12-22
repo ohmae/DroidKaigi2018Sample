@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.mm2d.droidkaigi2018sample"
     >
 
     <application
@@ -16,6 +15,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="${app_name}"
+            android:theme="@style/AppTheme.NoActionBar"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
         <activity
             android:name=".sample2.Sample2Activity"
             android:label="SAMPLE2"
-            android:theme="@style/AppThemeDark"
+            android:theme="@style/AppTheme.NoActionBar"
             />
         <activity
             android:name=".sample3.Sample3Activity"
