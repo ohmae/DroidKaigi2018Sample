@@ -13,7 +13,6 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.graphics.Bitmap.Config
 import android.graphics.Path.Direction
 import android.graphics.PorterDuff.Mode.CLEAR
 import android.graphics.PorterDuff.Mode.SRC
@@ -30,6 +29,8 @@ import androidx.core.content.ContextCompat
 import net.mm2d.droidkaigi2018sample.R
 import net.mm2d.droidkaigi2018sample.util.hypotenuseSquare
 import kotlin.math.sqrt
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.withSave
 
 /**
  * 新機能アピール用のView
@@ -95,7 +96,7 @@ class IntroductoryView @JvmOverloads constructor(
 
     override fun dispatchDraw(canvas: Canvas) {
         if (buffer?.let { it.width == canvas.width && it.height == canvas.height } != true) {
-            buffer = Bitmap.createBitmap(canvas.width, canvas.height, Config.ARGB_8888).also {
+            buffer = createBitmap(canvas.width, canvas.height).also {
                 bufferCanvas = Canvas(it)
             }
         }
@@ -114,12 +115,12 @@ class IntroductoryView @JvmOverloads constructor(
             return
         }
         canvas.drawCircle(centerX, centerY, circleRadius, circlePaint)
-        canvas.save()
-        path.reset()
-        path.addCircle(centerX, centerY, circleRadius, Direction.CW)
-        canvas.clipPath(path)
-        super.dispatchDraw(this.bufferCanvas!!)
-        canvas.restore()
+        canvas.withSave {
+            path.reset()
+            path.addCircle(centerX, centerY, circleRadius, Direction.CW)
+            clipPath(path)
+            super.dispatchDraw(bufferCanvas!!)
+        }
         if (holeRadius > 0f) {
             canvas.drawCircle(centerX, centerY, holeRadius, holePaint)
         }

@@ -10,7 +10,6 @@ package net.mm2d.droidkaigi2018sample.sample1
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Bitmap.Config
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -20,6 +19,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.Dimension
 import net.mm2d.droidkaigi2018sample.R
+import androidx.core.graphics.createBitmap
 
 /**
  * タッチイベントを受け取り、その座標を描画するView。
@@ -64,7 +64,7 @@ class Sample1View @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         val buffer = buffer.let {
             if (it == null || it.width != width || it.height != height) {
-                Bitmap.createBitmap(width, height, Config.ARGB_8888).also { bitmap ->
+                createBitmap(width, height).also { bitmap ->
                     bufferCanvas = Canvas(bitmap).apply {
                         drawColor(Color.WHITE)
                     }
